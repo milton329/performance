@@ -1,0 +1,34 @@
+RewriteEngine On
+
+	
+RewriteCond %{HTTP_HOST} ^kword.com [NC]
+RewriteRule ^(.*)$ http://www.kword.com/$1 [L,R=301]
+
+RewriteRule dashboard/(.*).html$ dashboard/index.php?var=$1
+
+RewriteRule puntuaciones/(.*).html$ puntuaciones/index.php?var=$1
+RewriteRule competencias/(.*).html$ competencias/index.php?var=$1
+RewriteRule evaluaciones/(.*).html$ evaluaciones/index.php?var=$1
+RewriteRule documentos/(.*).html$ documentos/index.php?var=$1
+RewriteRule informes/(.*).html$ informes/index.php?var=$1
+RewriteRule usuarios/(.*).html$ usuarios/index.php?var=$1
+RewriteRule configuracion/(.*).html$ configuracion/index.php?var=$1
+RewriteRule utilidades/(.*).html$ utilidades/index.php?var=$1
+RewriteRule inventarios/(.*).html$ inventarios/index.php?var=$1
+RewriteRule seguridad/(.*).html$ seguridad/index.php?var=$1 
+RewriteRule cartera/(.*).html$ cartera/index.php?var=$1
+RewriteRule pedidos/(.*).html$ pedidos/index.php?var=$1
+RewriteRule pos/(.*).html$ pos/index.php?var=$1
+RewriteRule financiero/(.*).html$ financiero/index.php?var=$1
+RewriteRule almacenes/(.*).html$ almacenes/index.php?var=$1
+RewriteRule servicios/(.*).html$ servicios/index.php?var=$1
+RewriteRule objetivos/(.*).html$ objetivos/index.php?var=$1
+
+RewriteRule genera-pdf-cotizacion/(.*).html$ resources/pdf/cotizacion/index.php?pdf=$1
+
+RewriteRule genera-pdf/(.*).html$ resources/pdf/factura/index.php?pdf=$1
+RewriteRule excel/(.*).html$ excel/index.php?excel=$1
+
+
+#para mostrar mensajes o paginas en un error 404,500,403
+#ErrorDocument 404 /home
