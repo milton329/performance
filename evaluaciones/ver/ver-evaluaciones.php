@@ -13,7 +13,7 @@
             <span class="text-muted font-weight-light"><i class="page-header-icon fa fa-users"></i>Listado de Evaluaciones </span>      
        <hr>    
     
-          <!-- <form id="frm-consulta-evaluaciones" name="frm-consulta-evaluaciones" class="form_sdv form-horizontal" method="post" action="../process/documento/consultar-documentos.php">   -->
+          <!-- <form id="frm-consulta-evaluaciones" name="frm-consulta-evaluaciones" class="form_sdv form-horizontal" method="post" action="../process/documento/consultar-documentos.php">  
 
             <input type="hidden" name="tipo" id="tipo" value="1">
             
@@ -57,11 +57,7 @@
               <button type="submit" style="border: none; background: #FFF; margin-top: 22px; font-size: 20px;"><i class="fa fa-play" aria-hidden="true"></i></button> 
             </div>
 
-          </form>
-      
-          <br style="clear: both" />
-          <br style="clear: both" />
-
+          </form> -->
           <div id="rsp-elidal"></div>
 
           <div id="rsp-frm-consulta-evaluaciones" class="tabletable">

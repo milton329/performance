@@ -2,7 +2,8 @@
 <div id="rsp_elim"></div>
 
 <div class="table-responsive">
-    <table class="table table-striped table-bordered table-hover dataTables-example" >
+   <!--  <table class="table table-striped table-bordered table-hover dataTables-example" > -->
+    <table class="table  table-bordered table-hover dataTables-example" >
         <thead>
             <tr>
                 <th>Grupo</th>

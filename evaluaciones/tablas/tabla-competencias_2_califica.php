@@ -1,7 +1,7 @@
 <div id="rsp_elim"></div>
 
-<div class="tabletable">
-    <table class="table table-bordered">
+<div class="table-responsive">
+    <table class="table table-bordered table-hover" >
         <thead>
             <tr>
                 <th>Documento</th>
