@@ -35,7 +35,7 @@
                  $puntuacioness = $oGlobals->verPorConsultaPor($puntuacionesss, 0);
                  $nombre_puntuacion=$puntuacioness['nombre'];
             ?>
-            <center><input  name="documento" id="documento" value="<?=$nombre_puntuacion;?>"></center>
+            <?=$nombre_puntuacion;?>
             <?php
             }else{                
             ?>

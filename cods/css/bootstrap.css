@@ -5052,9 +5052,8 @@ button.list-group-item-danger {
 .table-striped > tbody > tr:nth-of-type(odd) {
   background-color: #f9f9f9;
 }
-/*! efecto de las tablas */
 .table-hover > tbody > tr:hover {
-  background-color: #DBE8F7;
+  background-color: #E1F3F3;
 }
 table col[class*="col-"] {
   position: static;

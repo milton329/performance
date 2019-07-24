@@ -27,7 +27,10 @@ $documento=$competencias_1["documento"];
 
 <div class="panel">
   <div class="panel-body">
-    <div class="table-danger">           
+    <div class="table-danger">
+    <a href="#load_modulo" onClick="Funciones.cargar_modal_estructura('0', 'escala_puntuaciones', 'load_modulo', 0);" class="btn btn-danger btn-outline" data-toggle="modal" style="float: right;">
+          <span class="btn-label-icon left fa fa-question"></span>Escala de Puntuación
+        </a>       
         <?php
          //consultar el usuario a evaluar
          $usuarios = "select mov.id as id , u.nombre as nombre, documento, fecha_documento, mov.fecha_modificacion  from mov

@@ -59,7 +59,7 @@ $id=$id+1; $num=$num+160; $num2=$num2+162;
 '<mxCell id="6" value="Aprendizaje" style="swimlane" vertex="1" parent="2"><mxGeometry x="30" y="300" width="820" height="100" as="geometry"/></mxCell>'+
 <?php 
 $num=90; $id=60; $num2=40;
-            $sql = "SELECT * FROM objetivos where grupo='Personal'";            
+            $sql = "SELECT * FROM objetivos where grupo='Aprendizaje'";            
             $objetivos = $oGlobals->verPorConsultaPor($sql, 1);
             foreach($objetivos as $objetivo){
             $id2=$objetivo["id"]+10;

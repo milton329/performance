@@ -413,6 +413,11 @@ session_start();
 				include '../../objetivos/estructura/estructura-objetivos.php';
 			}
 
+			if($tabla == "escala_puntuaciones"){				
+						
+				include '../../puntuaciones/estructura/estructura-escala-puntuaciones.php';
+			}
+
 			if($tabla == "competencias_1"){
 
 			    $var 	= explode("_", $id);				

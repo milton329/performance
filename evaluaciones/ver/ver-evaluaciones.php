@@ -67,7 +67,7 @@
                 INNER JOIN config_usuarios as u ON u.id = mov.id_usuario
                 INNER JOIN config_roles as r ON r.id = u.id_rol
                 INNER JOIN estados_mov as e ON e.id = mov.cerrado
-                where mov.cerrado>'2'
+                where mov.cerrado>'0'
                 order by  fecha_documento desc limit 30";
       
             $objetivos = $oGlobals->verPorConsultaPor($sql, 1);
