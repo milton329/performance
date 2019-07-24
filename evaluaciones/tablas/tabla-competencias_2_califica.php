@@ -7,8 +7,20 @@
                 <th>Documento</th>
                 <th>Tipo</th>
                 <th><?= $tipo_detalle;?></th>
-                <!-- <th>Autoevaluación</th> -->
+                <?php
+                //verificar que tipo de estado es 
+                if ($estado>4){
+                ?>
+                <th>Autoevaluación</th>
                 <th>Auditoria</th>
+                <?php
+                }
+                if ($estado<5){
+                ?>
+                <th>Auditoria</th>
+                <?php
+                }
+                ?>
             </tr>
         </thead>
         <tbody id="tb_body">
@@ -27,13 +39,17 @@
                         <td><?= utf8_encode($objetivo["documento"]);?></td>
                         <td><?= utf8_encode($objetivo["tipo"]);?></td>
                         <td><?= utf8_encode($objetivo["nombre"]);?></td>
-            <!-- <?php 
+            <?php 
+                if ($estado>4){
                 //consultar que puntuacion es valor usuario
                  $puntua = "SELECT * FROM puntuaciones  where valor='".$objetivo["valor_usuario"]."'";
                  $puntuac = $oGlobals->verPorConsultaPor($puntua, 0);
                  $nombre_puntuac=$puntuac['nombre'];
             ?>
-                        <td style="width: 20%;"><?= utf8_encode($nombre_puntuac);?></td>    -->  
+                        <td style="width: 20%;"><?= utf8_encode($nombre_puntuac);?></td> 
+            <?php
+            }
+            ?>
                         <td style="width: 20%;">
             <?php 
             //consultar el campo cerrado de la tabla mov
