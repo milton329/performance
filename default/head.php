@@ -23,6 +23,11 @@
     <script src="../cods/graficas/code/modules/exporting.js"></script>
     <script src="../cods/graficas/code/modules/export-data.js"></script>
 
+    <script src="../cods/graficas/code/modules/sankey.js"></script>
+    <script src="../cods/graficas/code/modules/organization.js"></script>
+
+    <script src="../cods/graficas/code/modules/networkgraph.js"></script>
+
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title><?= $info_empresa["titulo_html"];?>: <?= ucwords($folderDirect);?></title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">

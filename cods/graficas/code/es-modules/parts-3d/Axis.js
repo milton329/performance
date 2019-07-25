@@ -1,26 +1,28 @@
-/**
- * (c) 2010-2017 Torstein Honsi
+/* *
+ * (c) 2010-2019 Torstein Honsi
  *
  * Extenstion for 3d axes
  *
  * License: www.highcharts.com/license
  */
+
 'use strict';
+
 import H from '../parts/Globals.js';
 import '../parts/Utilities.js';
 import '../parts/Axis.js';
 import '../parts/Chart.js';
 import '../parts/Tick.js';
-var ZAxis,
 
+var ZAxis,
     addEvent = H.addEvent,
     Axis = H.Axis,
     Chart = H.Chart,
     deg2rad = H.deg2rad,
-    each = H.each,
     extend = H.extend,
     merge = H.merge,
     perspective = H.perspective,
+    perspective3D = H.perspective3D,
     pick = H.pick,
     shapeArea = H.shapeArea,
     splat = H.splat,
@@ -35,24 +37,30 @@ var extendedOptions = {
         /**
          * Defines how the labels are be repositioned according to the 3D chart
          * orientation.
+         *
          * - `'offset'`: Maintain a fixed horizontal/vertical distance from the
-         *      tick marks, despite the chart orientation. This is the backwards
-         *      compatible behavior, and causes skewing of X and Z axes.
+         *   tick marks, despite the chart orientation. This is the backwards
+         *   compatible behavior, and causes skewing of X and Z axes.
+         *
          * - `'chart'`: Preserve 3D position relative to the chart.
          *   This looks nice, but hard to read if the text isn't
          *   forward-facing.
-         * - `'flap'`: Rotated text along the axis to compensate for the chart
-         *      orientation. This tries to maintain text as legible as possible
-         *      on all orientations.
-         * - `'ortho'`: Rotated text along the axis direction so that the labels
-         *      are orthogonal to the axis. This is very similar to `'flap'`,
-         *      but prevents skewing the labels (X and Y scaling are still
-         *      present).
          *
+         * - `'flap'`: Rotated text along the axis to compensate for the chart
+         *   orientation. This tries to maintain text as legible as possible
+         *   on all orientations.
+         *
+         * - `'ortho'`: Rotated text along the axis direction so that the labels
+         *   are orthogonal to the axis. This is very similar to `'flap'`,
+         *   but prevents skewing the labels (X and Y scaling are still
+         *   present).
+         *
+         * @sample highcharts/3d/skewed-labels/
+         *         Skewed labels
+         *
+         * @since      5.0.15
          * @validvalue ['offset', 'chart', 'flap', 'ortho']
-         * @sample highcharts/3d/skewed-labels/ Skewed labels
-         * @since 5.0.15
-         * @product highcharts
+         * @product    highcharts
          */
         position3d: 'offset',
 
@@ -64,8 +72,10 @@ var extendedOptions = {
          *
          * The final appearance depends heavily on `labels.position3d`.
          *
-         * @since 5.0.15
-         * @sample highcharts/3d/skewed-labels/ Skewed labels
+         * @sample highcharts/3d/skewed-labels/
+         *         Skewed labels
+         *
+         * @since   5.0.15
          * @product highcharts
          */
         skew3d: false
@@ -74,42 +84,49 @@ var extendedOptions = {
         /**
          * Defines how the title is repositioned according to the 3D chart
          * orientation.
+         *
          * - `'offset'`: Maintain a fixed horizontal/vertical distance from the
          *   tick marks, despite the chart orientation. This is the backwards
          *   compatible behavior, and causes skewing of X and Z axes.
+         *
          * - `'chart'`: Preserve 3D position relative to the chart.
          *   This looks nice, but hard to read if the text isn't
          *   forward-facing.
+         *
          * - `'flap'`: Rotated text along the axis to compensate for the chart
          *   orientation. This tries to maintain text as legible as possible on
          *   all orientations.
+         *
          * - `'ortho'`: Rotated text along the axis direction so that the labels
          *   are orthogonal to the axis. This is very similar to `'flap'`, but
          *   prevents skewing the labels (X and Y scaling are still present).
-         * - `null`: Will use the config from `labels.position3d`
          *
-         * @validvalue ['offset', 'chart', 'flap', 'ortho', null]
-         * @type {String}
-         * @since 5.0.15
-         * @sample highcharts/3d/skewed-labels/ Skewed labels
-         * @product highcharts
+         * - `undefined`: Will use the config from `labels.position3d`
+         *
+         * @sample highcharts/3d/skewed-labels/
+         *         Skewed labels
+         *
+         * @type       {"offset"|"chart"|"flap"|"ortho"|null}
+         * @since      5.0.15
+         * @product    highcharts
          */
         position3d: null,
 
         /**
          * If enabled, the axis title will skewed to follow the perspective.
          *
-          * This will fix overlapping labels and titles, but texts become less
-          * legible due to the distortion.
+         * This will fix overlapping labels and titles, but texts become less
+         * legible due to the distortion.
          *
          * The final appearance depends heavily on `title.position3d`.
          *
          * A `null` value will use the config from `labels.skew3d`.
          *
-         * @validvalue [false, true, null]
-         * @type {Boolean}
-         * @sample highcharts/3d/skewed-labels/ Skewed labels
-         * @since 5.0.15
+         * @sample highcharts/3d/skewed-labels/
+         *         Skewed labels
+         *
+         * @type    {boolean|null}
+         * @since   5.0.15
          * @product highcharts
          */
         skew3d: null
@@ -121,6 +138,7 @@ merge(true, Axis.prototype.defaultOptions, extendedOptions);
 
 addEvent(Axis, 'afterSetOptions', function () {
     var options;
+
     if (this.chart.is3d && this.chart.is3d() && this.coll !== 'colorAxis') {
         options = this.options;
         options.tickWidth = pick(options.tickWidth, 0);
@@ -153,7 +171,8 @@ wrap(Axis.prototype, 'getPlotLinePath', function (proceed) {
     ];
 
     var pathSegments = [];
-    if (!this.horiz) {  // Y-Axis
+
+    if (!this.horiz) { // Y-Axis
         if (frame.front.visible) {
             pathSegments.push(pArr[0], pArr[2]);
         }
@@ -166,7 +185,7 @@ wrap(Axis.prototype, 'getPlotLinePath', function (proceed) {
         if (frame.right.visible) {
             pathSegments.push(pArr[2], pArr[3]);
         }
-    } else if (this.isZAxis) {  // Z-Axis
+    } else if (this.isZAxis) { // Z-Axis
         if (frame.left.visible) {
             pathSegments.push(pArr[0], pArr[2]);
         }
@@ -179,7 +198,7 @@ wrap(Axis.prototype, 'getPlotLinePath', function (proceed) {
         if (frame.bottom.visible) {
             pathSegments.push(pArr[2], pArr[3]);
         }
-    } else {  // X-Axis
+    } else { // X-Axis
         if (frame.front.visible) {
             pathSegments.push(pArr[0], pArr[2]);
         }
@@ -219,17 +238,18 @@ wrap(Axis.prototype, 'getPlotBandPath', function (proceed) {
         from = args[1],
         to = args[2],
         path = [],
-        fromPath = this.getPlotLinePath(from),
-        toPath = this.getPlotLinePath(to);
+        fromPath = this.getPlotLinePath({ value: from }),
+        toPath = this.getPlotLinePath({ value: to });
 
     if (fromPath && toPath) {
         for (var i = 0; i < fromPath.length; i += 6) {
             path.push(
                 'M', fromPath[i + 1], fromPath[i + 2],
                 'L', fromPath[i + 4], fromPath[i + 5],
-                'L',   toPath[i + 4],   toPath[i + 5],
-                'L',   toPath[i + 1],   toPath[i + 2],
-                'Z');
+                'L', toPath[i + 4], toPath[i + 5],
+                'L', toPath[i + 1], toPath[i + 2],
+                'Z'
+            );
         }
     }
 
@@ -269,7 +289,7 @@ function fix3dPosition(axis, pos, isTitle) {
     pos = axis.swapZ({ x: pos.x, y: pos.y, z: 0 });
 
 
-    if (axis.isZAxis) {  // Z Axis
+    if (axis.isZAxis) { // Z Axis
         if (axis.opposite) {
             if (frame.axes.z.top === null) {
                 return {};
@@ -289,7 +309,7 @@ function fix3dPosition(axis, pos, isTitle) {
             vecX = frame.axes.z.bottom.xDir;
             reverseFlap = !frame.bottom.frontFacing;
         }
-    } else if (axis.horiz) {  // X Axis
+    } else if (axis.horiz) { // X Axis
         if (axis.opposite) {
             if (frame.axes.x.top === null) {
                 return {};
@@ -309,7 +329,7 @@ function fix3dPosition(axis, pos, isTitle) {
             vecX = frame.axes.x.bottom.xDir;
             reverseFlap = !frame.bottom.frontFacing;
         }
-    } else {  // Y Axis
+    } else { // Y Axis
         if (axis.opposite) {
             if (frame.axes.y.right === null) {
                 return {};
@@ -337,11 +357,12 @@ function fix3dPosition(axis, pos, isTitle) {
 
     } else if (positionMode === 'flap') {
         // Labels are be rotated around the axis direction to face the screen
-        if (!axis.horiz) {  // Y Axis
+        if (!axis.horiz) { // Y Axis
             vecX = { x: Math.cos(beta), y: 0, z: Math.sin(beta) };
-        } else {  // X and Z Axis
+        } else { // X and Z Axis
             var sin = Math.sin(alpha);
             var cos = Math.cos(alpha);
+
             if (axis.opposite) {
                 sin = -sin;
             }
@@ -352,14 +373,15 @@ function fix3dPosition(axis, pos, isTitle) {
         }
     } else if (positionMode === 'ortho') {
         // Labels will be rotated to be ortogonal to the axis
-        if (!axis.horiz) {  // Y Axis
+        if (!axis.horiz) { // Y Axis
             vecX = { x: Math.cos(beta), y: 0, z: Math.sin(beta) };
-        } else {  // X and Z Axis
+        } else { // X and Z Axis
             var sina = Math.sin(alpha);
             var cosa = Math.cos(alpha);
             var sinb = Math.sin(beta);
             var cosb = Math.cos(beta);
             var vecZ = { x: sinb * cosa, y: -sina, z: -cosa * cosb };
+
             vecY = {
                 x: vecX.y * vecZ.z - vecX.z * vecZ.y,
                 y: vecX.z * vecZ.x - vecX.x * vecZ.z,
@@ -368,17 +390,18 @@ function fix3dPosition(axis, pos, isTitle) {
             var scale = 1 / Math.sqrt(
                 vecY.x * vecY.x + vecY.y * vecY.y + vecY.z * vecY.z
             );
+
             if (reverseFlap) {
                 scale = -scale;
             }
             vecY = { x: scale * vecY.x, y: scale * vecY.y, z: scale * vecY.z };
         }
-    } else {  // positionMode  == 'offset'
+    } else { // positionMode  == 'offset'
         // Labels will be skewd to maintain vertical / horizontal offsets from
         // axis
-        if (!axis.horiz) {  // Y Axis
+        if (!axis.horiz) { // Y Axis
             vecX = { x: Math.cos(beta), y: 0, z: Math.sin(beta) };
-        } else {  // X and Z Axis
+        } else { // X and Z Axis
             vecY = {
                 x: Math.sin(beta) * Math.sin(alpha),
                 y: Math.cos(alpha),
@@ -399,6 +422,7 @@ function fix3dPosition(axis, pos, isTitle) {
             { x: pos.x + vecX.x, y: pos.y + vecX.y, z: pos.z + vecX.z },
             { x: pos.x + vecY.x, y: pos.y + vecY.y, z: pos.z + vecY.z }
         ], axis.chart)) < 0;
+
         if (isMirrored) {
             vecX = { x: -vecX.x, y: -vecX.y, z: -vecX.z };
         }
@@ -421,8 +445,6 @@ function fix3dPosition(axis, pos, isTitle) {
             projected.y * projected.matrix[2];
         projected.matrix[5] -= projected.x * projected.matrix[1] +
             projected.y * projected.matrix[3];
-    } else {
-        projected.matrix = null;
     }
 
     return projected;
@@ -431,6 +453,7 @@ function fix3dPosition(axis, pos, isTitle) {
 /*
 Tick extensions
  */
+
 wrap(Tick.prototype, 'getMarkPath', function (proceed) {
     var path = proceed.apply(this, [].slice.call(arguments, 1));
 
@@ -448,6 +471,7 @@ addEvent(Tick, 'afterGetLabelPosition', function (e) {
 
 wrap(Axis.prototype, 'getTitlePosition', function (proceed) {
     var pos = proceed.apply(this, [].slice.call(arguments, 1));
+
     return fix3dPosition(this, pos, true);
 });
 
@@ -455,14 +479,14 @@ addEvent(Axis, 'drawCrosshair', function (e) {
     if (this.chart.is3d() && this.coll !== 'colorAxis') {
         if (e.point) {
             e.point.crosshairPos = this.isXAxis ?
-                e.point.plotXold || e.point.plotX :
-                this.len - (e.point.plotYold || e.point.plotY);
+                e.point.axisXpos :
+                this.len - (e.point.axisYpos);
         }
     }
 });
 
 addEvent(Axis, 'destroy', function () {
-    each(['backFrame', 'bottomFrame', 'sideFrame'], function (prop) {
+    ['backFrame', 'bottomFrame', 'sideFrame'].forEach(function (prop) {
         if (this[prop]) {
             this[prop] = this[prop].destroy();
         }
@@ -471,11 +495,12 @@ addEvent(Axis, 'destroy', function () {
 
 /*
 Z-AXIS
-*/
+ */
 
 Axis.prototype.swapZ = function (p, insidePlotArea) {
     if (this.isZAxis) {
         var plotLeft = insidePlotArea ? 0 : this.chart.plotLeft;
+
         return {
             x: plotLeft + p.z,
             y: p.y,
@@ -521,7 +546,7 @@ extend(ZAxis.prototype, {
         }
 
         // loop through this axis' series
-        each(axis.series, function (series) {
+        axis.series.forEach(function (series) {
 
             if (series.visible || !chart.options.chart.ignoreHiddenSeries) {
 
@@ -553,9 +578,7 @@ extend(ZAxis.prototype, {
 });
 
 
-/**
-* Get the Z axis in addition to the default X and Y.
-*/
+// Get the Z axis in addition to the default X and Y.
 addEvent(Chart, 'afterGetAxes', function () {
     var chart = this,
         options = this.options,
@@ -565,11 +588,82 @@ addEvent(Chart, 'afterGetAxes', function () {
         return;
     }
     this.zAxis = [];
-    each(zAxisOptions, function (axisOptions, i) {
+    zAxisOptions.forEach(function (axisOptions, i) {
         axisOptions.index = i;
         // Z-Axis is shown horizontally, so it's kind of a X-Axis
         axisOptions.isX = true;
         var zAxis = new ZAxis(chart, axisOptions);
+
         zAxis.setScale();
     });
+});
+
+// Wrap getSlotWidth function to calculate individual width value for each slot
+// (#8042).
+wrap(Axis.prototype, 'getSlotWidth', function (proceed, tick) {
+    if (this.chart.is3d() &&
+        tick &&
+        tick.label &&
+        this.categories &&
+        this.chart.frameShapes
+    ) {
+        var chart = this.chart,
+            ticks = this.ticks,
+            gridGroup = this.gridGroup.element.childNodes,
+            firstGridLine = gridGroup[0].getBBox(),
+            frame3DLeft = chart.frameShapes.left.getBBox(),
+            options3d = chart.options.chart.options3d,
+            origin = {
+                x: chart.plotWidth / 2,
+                y: chart.plotHeight / 2,
+                z: options3d.depth / 2,
+                vd: pick(options3d.depth, 1) * pick(options3d.viewDistance, 0)
+            },
+            labelPos,
+            prevLabelPos,
+            nextLabelPos,
+            slotWidth,
+            tickId = tick.pos,
+            prevTick = ticks[tickId - 1],
+            nextTick = ticks[tickId + 1];
+
+        // Check whether the tick is not the first one and previous tick exists,
+        // then calculate position of previous label.
+        if (tickId !== 0 && prevTick && prevTick.label.xy) { // #8621
+            prevLabelPos = perspective3D({
+                x: prevTick.label.xy.x,
+                y: prevTick.label.xy.y,
+                z: null
+            }, origin, origin.vd);
+        }
+        // If next label position is defined, then recalculate its position
+        // basing on the perspective.
+        if (nextTick && nextTick.label.xy) {
+            nextLabelPos = perspective3D({
+                x: nextTick.label.xy.x,
+                y: nextTick.label.xy.y,
+                z: null
+            }, origin, origin.vd);
+        }
+        labelPos = {
+            x: tick.label.xy.x,
+            y: tick.label.xy.y,
+            z: null
+        };
+
+        labelPos = perspective3D(labelPos, origin, origin.vd);
+
+        // If tick is first one, check whether next label position is already
+        // calculated, then return difference between the first and the second
+        // label. If there is no next label position calculated, return the
+        // difference between the first grid line and left 3d frame.
+        slotWidth = Math.abs(
+            prevLabelPos ?
+                labelPos.x - prevLabelPos.x : nextLabelPos ?
+                    nextLabelPos.x - labelPos.x :
+                    firstGridLine.x - frame3DLeft.x
+        );
+        return slotWidth;
+    }
+    return proceed.apply(this, [].slice.call(arguments, 1));
 });

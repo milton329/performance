@@ -1,261 +1,254 @@
 /**
- * @license Highcharts JS v6.1.0 (2018-04-13)
+ * @license Highcharts JS v7.1.2 (2019-06-03)
+ *
  * Plugin for displaying a message when there is no data visible in chart.
  *
- * (c) 2010-2017 Highsoft AS
+ * (c) 2010-2019 Highsoft AS
  * Author: Oystein Moseng
  *
  * License: www.highcharts.com/license
  */
 'use strict';
 (function (factory) {
-	if (typeof module === 'object' && module.exports) {
-		module.exports = factory;
-	} else {
-		factory(Highcharts);
-	}
+    if (typeof module === 'object' && module.exports) {
+        factory['default'] = factory;
+        module.exports = factory;
+    } else if (typeof define === 'function' && define.amd) {
+        define('highcharts/modules/no-data-to-display', ['highcharts'], function (Highcharts) {
+            factory(Highcharts);
+            factory.Highcharts = Highcharts;
+            return factory;
+        });
+    } else {
+        factory(typeof Highcharts !== 'undefined' ? Highcharts : undefined);
+    }
 }(function (Highcharts) {
-	(function (H) {
-		/**
-		 * Plugin for displaying a message when there is no data visible in chart.
-		 *
-		 * (c) 2010-2017 Highsoft AS
-		 * Author: Oystein Moseng
-		 *
-		 * License: www.highcharts.com/license
-		 */
-
-		var seriesTypes = H.seriesTypes,
-		    chartPrototype = H.Chart.prototype,
-		    defaultOptions = H.getOptions(),
-		    extend = H.extend,
-		    each = H.each;
-
-		// Add language option
-		extend(defaultOptions.lang, {
-		    /**
-		     * The text to display when the chart contains no data. Requires the
-		     * no-data module, see [noData](#noData).
-		     *
-		     * @type {String}
-		     * @default No data to display
-		     * @since 3.0.8
-		     * @product highcharts highstock
-		     * @sample highcharts/no-data-to-display/no-data-line
-		     *         No-data text
-		     * @apioption lang.noData
-		     */
-		    noData: 'No data to display'
-		});
-
-		// Add default display options for message
-		/**
-		 * Options for displaying a message like "No data to display".
-		 * This feature requires the file no-data-to-display.js to be loaded in the
-		 * page. The actual text to display is set in the lang.noData option.
-		 * @type {Object}
-		 *
-		 * @sample highcharts/no-data-to-display/no-data-line
-		 *         Line chart with no-data module
-		 * @sample highcharts/no-data-to-display/no-data-pie
-		 *         Pie chart with no-data module
-		 * @optionparent noData
-		 */
-		defaultOptions.noData = {
-
-		    /**
-		     * An object of additional SVG attributes for the no-data label.
-		     *
-		     * @type {Object}
-		     * @since 3.0.8
-		     * @product highcharts highstock
-		     * @apioption noData.attr
-		     */
-
-		    /**
-		     * Whether to insert the label as HTML, or as pseudo-HTML rendered with
-		     * SVG.
-		     *
-		     * @type {Boolean}
-		     * @default false
-		     * @since 4.1.10
-		     * @product highcharts highstock
-		     * @apioption noData.useHTML
-		     */
-
-		    /**
-		     * The position of the no-data label, relative to the plot area.
-		     *
-		     * @type {Object}
-		     * @default { "x": 0, "y": 0, "align": "center", "verticalAlign": "middle" }
-		     * @since 3.0.8
-		     */
-		    position: {
-
-		        /**
-		         * Horizontal offset of the label, in pixels.
-		         *
-		         * @type {Number}
-		         * @default 0
-		         * @product highcharts highstock
-		         */
-		        x: 0,
-
-		        /**
-		         * Vertical offset of the label, in pixels.
-		         *
-		         * @type {Number}
-		         * @default 0
-		         * @product highcharts highstock
-		         */
-		        y: 0,
-
-		        /**
-		         * Horizontal alignment of the label.
-		         *
-		         * @validvalue ["left", "center", "right"]
-		         * @type {String}
-		         * @default center
-		         */
-		        align: 'center',
-
-		        /**
-		         * Vertical alignment of the label.
-		         *
-		         * @validvalue ["top", "middle", "bottom"]
-		         * @type {String}
-		         * @default middle
-		         * @product highcharts highstock
-		         */
-		        verticalAlign: 'middle'
-		    }
-		};
-
-
-		// Presentational
-		/**
-		 * CSS styles for the no-data label.
-		 *
-		 * @sample highcharts/no-data-to-display/no-data-line
-		 *         Styled no-data text
-		 * @optionparent noData.style
-		 */
-		defaultOptions.noData.style = {
-		    fontWeight: 'bold',
-		    fontSize: '12px',
-		    color: '#666666'
-		};
+    var _modules = Highcharts ? Highcharts._modules : {};
+    function _registerModule(obj, path, args, fn) {
+        if (!obj.hasOwnProperty(path)) {
+            obj[path] = fn.apply(null, args);
+        }
+    }
+    _registerModule(_modules, 'modules/no-data-to-display.src.js', [_modules['parts/Globals.js']], function (H) {
+        /* *
+         *
+         *  Plugin for displaying a message when there is no data visible in chart.
+         *
+         *  (c) 2010-2019 Highsoft AS
+         *
+         *  Author: Oystein Moseng
+         *
+         *  License: www.highcharts.com/license
+         *
+         * */
 
 
 
-		// Define hasData function for non-cartesian seris. Returns true if the series
-		// has points at all.
-		each([
-		    'bubble',
-		    'gauge',
-		    'heatmap',
-		    'pie',
-		    'sankey',
-		    'treemap',
-		    'waterfall'
-		], function (type) {
-		    if (seriesTypes[type]) {
-		        seriesTypes[type].prototype.hasData = function () {
-		            return !!this.points.length; // != 0
-		        };
-		    }
-		});
+        var chartPrototype = H.Chart.prototype,
+            defaultOptions = H.getOptions(),
+            extend = H.extend;
 
-		/**
-		 * Define hasData functions for series. These return true if there are data
-		 * points on this series within the plot area.
-		 */
-		H.Series.prototype.hasData = function () {
-		    return (
-		        this.visible &&
-		        this.dataMax !== undefined &&
-		        this.dataMin !== undefined // #3703
-		    );
-		};
+        // Add language option
+        extend(
+            defaultOptions.lang,
+            /**
+             * @optionparent lang
+             */
+            {
+                /**
+                 * The text to display when the chart contains no data. Requires the
+                 * no-data module, see [noData](#noData).
+                 *
+                 * @sample highcharts/no-data-to-display/no-data-line
+                 *         No-data text
+                 *
+                 * @since   3.0.8
+                 * @product highcharts highstock
+                 */
+                noData: 'No data to display'
+            }
+        );
 
-		/**
-		 * Display a no-data message.
-		 *
-		 * @param {String} str An optional message to show in place of the default one
-		 */
-		chartPrototype.showNoData = function (str) {
-		    var chart = this,
-		        options = chart.options,
-		        text = str || (options && options.lang.noData),
-		        noDataOptions = options && options.noData;
+        // Add default display options for message
 
-		    if (!chart.noDataLabel && chart.renderer) {
-		        chart.noDataLabel = chart.renderer
-		            .label(
-		                text,
-		                0,
-		                0,
-		                null,
-		                null,
-		                null,
-		                noDataOptions.useHTML,
-		                null,
-		                'no-data'
-		            );
+        /**
+         * Options for displaying a message like "No data to display".
+         * This feature requires the file no-data-to-display.js to be loaded in the
+         * page. The actual text to display is set in the lang.noData option.
+         *
+         * @sample highcharts/no-data-to-display/no-data-line
+         *         Line chart with no-data module
+         * @sample highcharts/no-data-to-display/no-data-pie
+         *         Pie chart with no-data module
+         *
+         * @product      highcharts highstock gantt
+         * @optionparent noData
+         */
+        defaultOptions.noData = {
 
-        
-		        chart.noDataLabel
-		            .attr(noDataOptions.attr)
-		            .css(noDataOptions.style);
-        
+            /**
+             * An object of additional SVG attributes for the no-data label.
+             *
+             * @type      {Highcharts.SVGAttributes}
+             * @since     3.0.8
+             * @product   highcharts highstock gantt
+             * @apioption noData.attr
+             */
 
-		        chart.noDataLabel.add();
+            /**
+             * Whether to insert the label as HTML, or as pseudo-HTML rendered with
+             * SVG.
+             *
+             * @type      {boolean}
+             * @default   false
+             * @since     4.1.10
+             * @product   highcharts highstock gantt
+             * @apioption noData.useHTML
+             */
 
-		        chart.noDataLabel.align(
-		            extend(chart.noDataLabel.getBBox(), noDataOptions.position),
-		            false,
-		            'plotBox'
-		        );
-		    }
-		};
+            /**
+             * The position of the no-data label, relative to the plot area.
+             *
+             * @type  {Highcharts.AlignObject}
+             * @since 3.0.8
+             */
+            position: {
 
-		/**
-		 * Hide no-data message
-		 */
-		chartPrototype.hideNoData = function () {
-		    var chart = this;
-		    if (chart.noDataLabel) {
-		        chart.noDataLabel = chart.noDataLabel.destroy();
-		    }
-		};
+                /**
+                 * Horizontal offset of the label, in pixels.
+                 */
+                x: 0,
 
-		/**
-		 * Returns true if there are data points within the plot area now
-		 */
-		chartPrototype.hasData = function () {
-		    var chart = this,
-		        series = chart.series || [],
-		        i = series.length;
+                /**
+                 * Vertical offset of the label, in pixels.
+                 */
+                y: 0,
 
-		    while (i--) {
-		        if (series[i].hasData() && !series[i].options.isInternal) {
-		            return true;
-		        }
-		    }
+                /**
+                 * Horizontal alignment of the label.
+                 *
+                 * @type {Highcharts.AlignValue}
+                 */
+                align: 'center',
 
-		    return chart.loadingShown; // #4588
-		};
+                /**
+                 * Vertical alignment of the label.
+                 *
+                 * @type {Highcharts.VerticalAlignValue}
+                 */
+                verticalAlign: 'middle'
+            },
 
-		/**
-		 * Add event listener to handle automatic show or hide no-data message
-		 */
-		H.addEvent(H.Chart, 'render', function handleNoData() {
-		    if (this.hasData()) {
-		        this.hideNoData();
-		    } else {
-		        this.showNoData();
-		    }
-		});
+            /**
+             * CSS styles for the no-data label.
+             *
+             * @sample highcharts/no-data-to-display/no-data-line
+             *         Styled no-data text
+             *
+             * @type {Highcharts.CSSObject}
+             */
+            style: {
+                /** @ignore */
+                fontWeight: 'bold',
+                /** @ignore */
+                fontSize: '12px',
+                /** @ignore */
+                color: '#666666'
+            }
 
-	}(Highcharts));
+        };
+
+        /**
+         * Display a no-data message.
+         *
+         * @private
+         * @function Highcharts.Chart#showNoData
+         *
+         * @param {string} str
+         *        An optional message to show in place of the default one
+         */
+        chartPrototype.showNoData = function (str) {
+            var chart = this,
+                options = chart.options,
+                text = str || (options && options.lang.noData),
+                noDataOptions = options && options.noData;
+
+            if (!chart.noDataLabel && chart.renderer) {
+                chart.noDataLabel = chart.renderer
+                    .label(
+                        text,
+                        0,
+                        0,
+                        null,
+                        null,
+                        null,
+                        noDataOptions.useHTML,
+                        null,
+                        'no-data'
+                    );
+
+                if (!chart.styledMode) {
+                    chart.noDataLabel
+                        .attr(noDataOptions.attr)
+                        .css(noDataOptions.style);
+                }
+
+                chart.noDataLabel.add();
+
+                chart.noDataLabel.align(
+                    extend(chart.noDataLabel.getBBox(), noDataOptions.position),
+                    false,
+                    'plotBox'
+                );
+            }
+        };
+
+        /**
+         * Hide no-data message.
+         *
+         * @private
+         * @function Highcharts.Chart#hideNoData
+         */
+        chartPrototype.hideNoData = function () {
+            var chart = this;
+
+            if (chart.noDataLabel) {
+                chart.noDataLabel = chart.noDataLabel.destroy();
+            }
+        };
+
+        /**
+         * Returns true if there are data points within the plot area now.
+         *
+         * @private
+         * @function Highcharts.Chart#hasData
+         */
+        chartPrototype.hasData = function () {
+            var chart = this,
+                series = chart.series || [],
+                i = series.length;
+
+            while (i--) {
+                if (series[i].hasData() && !series[i].options.isInternal) {
+                    return true;
+                }
+            }
+
+            return chart.loadingShown; // #4588
+        };
+
+        // Add event listener to handle automatic show or hide no-data message.
+        H.addEvent(H.Chart, 'render', function handleNoData() {
+            if (this.hasData()) {
+                this.hideNoData();
+            } else {
+                this.showNoData();
+            }
+        });
+
+    });
+    _registerModule(_modules, 'masters/modules/no-data-to-display.src.js', [], function () {
+
+
+    });
 }));

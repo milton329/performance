@@ -1,17 +1,19 @@
-/**
- * (c) 2010-2017 Torstein Honsi
+/* *
+ * (c) 2010-2019 Torstein Honsi
  *
  * Extension for 3D charts
  *
  * License: www.highcharts.com/license
  */
+
 'use strict';
+
 import H from '../parts/Globals.js';
 import '../parts/Utilities.js';
 import '../parts/Chart.js';
+
 var addEvent = H.addEvent,
     Chart = H.Chart,
-    each = H.each,
     merge = H.merge,
     perspective = H.perspective,
     pick = H.pick,
@@ -34,14 +36,23 @@ addEvent(Chart, 'afterInit', function () {
     var options = this.options;
 
     if (this.is3d()) {
-        each(options.series, function (s) {
+        (options.series || []).forEach(function (s) {
             var type = s.type ||
                 options.chart.type ||
                 options.chart.defaultSeriesType;
+
             if (type === 'scatter') {
                 s.type = 'scatter3d';
             }
         });
+    }
+});
+// And do it on dynamic add (#8407)
+addEvent(Chart, 'addSeries', function (e) {
+    if (this.is3d()) {
+        if (e.options.type === 'scatter') {
+            e.options.type = 'scatter3d';
+        }
     }
 });
 
@@ -52,13 +63,18 @@ addEvent(Chart, 'afterInit', function () {
  *         object, but since the chart object is needed for perspective it is
  *         not practical. Possible to make both getScale and perspective more
  *         logical and also immutable.
- * @param  {Object} chart Chart object
- * @param  {Number} chart.plotLeft
- * @param  {Number} chart.plotWidth
- * @param  {Number} chart.plotTop
- * @param  {Number} chart.plotHeight
- * @param  {Number} depth The depth of the chart
- * @return {Number} The scale to fit the 3D chart into the plotting area.
+ *
+ * @private
+ * @function getScale
+ *
+ * @param {Highcharts.Chart} chart
+ *        Chart object
+ *
+ * @param {number} depth
+ *        The depth of the chart
+ *
+ * @return {number}
+ *         The scale to fit the 3D chart into the plotting area.
  */
 function getScale(chart, depth) {
     var plotLeft = chart.plotLeft,
@@ -88,7 +104,7 @@ function getScale(chart, depth) {
     }];
 
     // Top right corners:
-    each([0, 1], function (i) {
+    [0, 1].forEach(function (i) {
         corners.push({
             x: plotRight,
             y: corners[i].y,
@@ -97,7 +113,7 @@ function getScale(chart, depth) {
     });
 
     // All bottom corners:
-    each([0, 1, 2, 3], function (i) {
+    [0, 1, 2, 3].forEach(function (i) {
         corners.push({
             x: corners[i].x,
             y: plotBottom,
@@ -109,7 +125,7 @@ function getScale(chart, depth) {
     corners = perspective(corners, chart, false);
 
     // Get bounding box of 3D element:
-    each(corners, function (corner) {
+    corners.forEach(function (corner) {
         bbox3d.minX = Math.min(bbox3d.minX, corner.x);
         bbox3d.maxX = Math.max(bbox3d.maxX, corner.x);
         bbox3d.minY = Math.min(bbox3d.minY, corner.y);
@@ -159,7 +175,6 @@ function getScale(chart, depth) {
 }
 
 
-
 H.wrap(H.Chart.prototype, 'isInsidePlot', function (proceed) {
     return this.is3d() || proceed.apply(this, [].slice.call(arguments, 1));
 });
@@ -169,17 +184,16 @@ var defaultOptions = H.getOptions();
 /**
  * @optionparent
  */
-var extendedOptions =     {
+var extendedOptions = {
 
     chart: {
 
         /**
          * Options to render charts in 3 dimensions. This feature requires
          * `highcharts-3d.js`, found in the download package or online at
-         * [code.highcharts.com/highcharts-3d.js](http://code.highcharts.com/highcharts-
-         * 3d.js).
+         * [code.highcharts.com/highcharts-3d.js](http://code.highcharts.com/highcharts-3d.js).
          *
-         * @since 4.0
+         * @since   4.0
          * @product highcharts
          */
         options3d: {
@@ -187,9 +201,7 @@ var extendedOptions =     {
             /**
              * Wether to render the chart using the 3D functionality.
              *
-             * @type {Boolean}
-             * @default false
-             * @since 4.0
+             * @since   4.0
              * @product highcharts
              */
             enabled: false,
@@ -197,9 +209,7 @@ var extendedOptions =     {
             /**
              * One of the two rotation angles for the chart.
              *
-             * @type {Number}
-             * @default 0
-             * @since 4.0
+             * @since   4.0
              * @product highcharts
              */
             alpha: 0,
@@ -207,9 +217,7 @@ var extendedOptions =     {
             /**
              * One of the two rotation angles for the chart.
              *
-             * @type {Number}
-             * @default 0
-             * @since 4.0
+             * @since   4.0
              * @product highcharts
              */
             beta: 0,
@@ -217,9 +225,7 @@ var extendedOptions =     {
             /**
              * The total depth of the chart.
              *
-             * @type {Number}
-             * @default 100
-             * @since 4.0
+             * @since   4.0
              * @product highcharts
              */
             depth: 100,
@@ -228,9 +234,7 @@ var extendedOptions =     {
              * Whether the 3d box should automatically adjust to the chart plot
              * area.
              *
-             * @type {Boolean}
-             * @default true
-             * @since 4.2.4
+             * @since   4.2.4
              * @product highcharts
              */
             fitToPlot: true,
@@ -241,9 +245,7 @@ var extendedOptions =     {
              * effect in column and scatter charts. It is not used for 3D pie
              * charts.
              *
-             * @type {Number}
-             * @default 100
-             * @since 4.0
+             * @since   4.0
              * @product highcharts
              */
             viewDistance: 25,
@@ -252,19 +254,17 @@ var extendedOptions =     {
              * Set it to `"auto"` to automatically move the labels to the best
              * edge.
              *
-             * @validvalue [null, "auto"]
-             * @type {String}
-             * @default null
-             * @since 5.0.12
+             * @type    {"auto"|null}
+             * @since   5.0.12
              * @product highcharts
              */
-            axisLabelPosition: 'default',
+            axisLabelPosition: null,
 
             /**
              * Provides the option to draw a frame around the charts by defining
              * a bottom, front and back panel.
              *
-             * @since 4.0
+             * @since   4.0
              * @product highcharts
              */
             frame: {
@@ -282,27 +282,27 @@ var extendedOptions =     {
                 /**
                  * The bottom of the frame around a 3D chart.
                  *
-                 * @since 4.0
+                 * @since   4.0
                  * @product highcharts
                  */
 
                 /**
                  * The color of the panel.
                  *
-                 * @type {Color}
-                 * @default transparent
-                 * @since 4.0
-                 * @product highcharts
+                 * @type      {Highcharts.ColorString|Highcharts.GradientColorObject|Highcharts.PatternObject}
+                 * @default   transparent
+                 * @since     4.0
+                 * @product   highcharts
                  * @apioption chart.options3d.frame.bottom.color
                  */
 
                 /**
                  * The thickness of the panel.
                  *
-                 * @type {Number}
-                 * @default 1
-                 * @since 4.0
-                 * @product highcharts
+                 * @type      {number}
+                 * @default   1
+                 * @since     4.0
+                 * @product   highcharts
                  * @apioption chart.options3d.frame.bottom.size
                  */
 
@@ -312,12 +312,13 @@ var extendedOptions =     {
                  * and `"default"` to display faces behind the data based on the
                  * axis layout, ignoring the point of view.
                  *
-                 * @validvalue ["default", "auto", true, false]
-                 * @type {Boolean|String}
-                 * @sample {highcharts} highcharts/3d/scatter-frame/ Auto frames
-                 * @default default
-                 * @since 5.0.12
-                 * @product highcharts
+                 * @sample {highcharts} highcharts/3d/scatter-frame/
+                 *         Auto frames
+                 *
+                 * @type      {boolean|"default"|"auto"}
+                 * @default   default
+                 * @since     5.0.12
+                 * @product   highcharts
                  * @apioption chart.options3d.frame.bottom.visible
                  */
 
@@ -329,35 +330,35 @@ var extendedOptions =     {
                 /**
                  * The top of the frame around a 3D chart.
                  *
-                 * @extends {chart.options3d.frame.bottom}
+                 * @extends chart.options3d.frame.bottom
                  */
                 top: {},
 
                 /**
                  * The left side of the frame around a 3D chart.
                  *
-                 * @extends {chart.options3d.frame.bottom}
+                 * @extends chart.options3d.frame.bottom
                  */
                 left: {},
 
                 /**
                  * The right of the frame around a 3D chart.
                  *
-                 * @extends {chart.options3d.frame.bottom}
+                 * @extends chart.options3d.frame.bottom
                  */
                 right: {},
 
                 /**
                  * The back side of the frame around a 3D chart.
                  *
-                 * @extends {chart.options3d.frame.bottom}
+                 * @extends chart.options3d.frame.bottom
                  */
                 back: {},
 
                 /**
                  * The front of the frame around a 3D chart.
                  *
-                 * @extends {chart.options3d.frame.bottom}
+                 * @extends chart.options3d.frame.bottom
                  */
                 front: {}
             }
@@ -367,7 +368,51 @@ var extendedOptions =     {
 
 merge(true, defaultOptions, extendedOptions);
 
+// Add the required CSS classes for column sides (#6018)
+addEvent(Chart, 'afterGetContainer', function () {
+    if (this.styledMode) {
+        this.renderer.definition({
+            tagName: 'style',
+            textContent:
+                '.highcharts-3d-top{' +
+                    'filter: url(#highcharts-brighter)' +
+                '}\n' +
+                '.highcharts-3d-side{' +
+                    'filter: url(#highcharts-darker)' +
+                '}\n'
+        });
 
+        // Add add definitions used by brighter and darker faces of the cuboids.
+        [{
+            name: 'darker',
+            slope: 0.6
+        }, {
+            name: 'brighter',
+            slope: 1.4
+        }].forEach(function (cfg) {
+            this.renderer.definition({
+                tagName: 'filter',
+                id: 'highcharts-' + cfg.name,
+                children: [{
+                    tagName: 'feComponentTransfer',
+                    children: [{
+                        tagName: 'feFuncR',
+                        type: 'linear',
+                        slope: cfg.slope
+                    }, {
+                        tagName: 'feFuncG',
+                        type: 'linear',
+                        slope: cfg.slope
+                    }, {
+                        tagName: 'feFuncB',
+                        type: 'linear',
+                        slope: cfg.slope
+                    }]
+                }]
+            });
+        }, this);
+    }
+});
 
 wrap(Chart.prototype, 'setClassName', function (proceed) {
     proceed.apply(this, [].slice.call(arguments, 1));
@@ -1258,7 +1303,7 @@ Chart.prototype.retrieveStacks = function (stacking) {
         stackNumber,
         i = 1;
 
-    each(this.series, function (s) {
+    this.series.forEach(function (s) {
         stackNumber = pick(
             s.options.stack,
             (stacking ? 0 : series.length - 1 - s.index)
@@ -1287,6 +1332,7 @@ Chart.prototype.get3dFrame = function () {
         zp = options3d.depth,
         faceOrientation = function (vertexes) {
             var area = H.shapeArea3d(vertexes, chart);
+
             // Give it 0.5 squared-pixel as a margin for rounding errors.
             if (area > 0.5) {
                 return 1;
@@ -1302,31 +1348,31 @@ Chart.prototype.get3dFrame = function () {
             { x: xp, y: yp, z: zm },
             { x: xm, y: yp, z: zm }
         ]),
-        topOrientation    = faceOrientation([
+        topOrientation = faceOrientation([
             { x: xm, y: ym, z: zm },
             { x: xp, y: ym, z: zm },
             { x: xp, y: ym, z: zp },
             { x: xm, y: ym, z: zp }
         ]),
-        leftOrientation   = faceOrientation([
+        leftOrientation = faceOrientation([
             { x: xm, y: ym, z: zm },
             { x: xm, y: ym, z: zp },
             { x: xm, y: yp, z: zp },
             { x: xm, y: yp, z: zm }
         ]),
-        rightOrientation  = faceOrientation([
+        rightOrientation = faceOrientation([
             { x: xp, y: ym, z: zp },
             { x: xp, y: ym, z: zm },
             { x: xp, y: yp, z: zm },
             { x: xp, y: yp, z: zp }
         ]),
-        frontOrientation  = faceOrientation([
+        frontOrientation = faceOrientation([
             { x: xm, y: yp, z: zm },
             { x: xp, y: yp, z: zm },
             { x: xp, y: ym, z: zm },
             { x: xm, y: ym, z: zm }
         ]),
-        backOrientation   = faceOrientation([
+        backOrientation = faceOrientation([
             { x: xm, y: ym, z: zp },
             { x: xp, y: ym, z: zp },
             { x: xp, y: yp, z: zp },
@@ -1342,7 +1388,7 @@ Chart.prototype.get3dFrame = function () {
     // The 'default' criteria to visible faces of the frame is looking up every
     // axis to decide whenever the left/right//top/bottom sides of the frame
     // will be shown
-    each([].concat(chart.xAxis, chart.yAxis, chart.zAxis), function (axis) {
+    [].concat(chart.xAxis, chart.yAxis, chart.zAxis).forEach(function (axis) {
         if (axis) {
             if (axis.horiz) {
                 if (axis.opposite) {
@@ -1363,11 +1409,14 @@ Chart.prototype.get3dFrame = function () {
     var getFaceOptions = function (sources, faceOrientation, defaultVisible) {
         var faceAttrs = ['size', 'color', 'visible'];
         var options = {};
+
         for (var i = 0; i < faceAttrs.length; i++) {
             var attr = faceAttrs[i];
+
             for (var j = 0; j < sources.length; j++) {
                 if (typeof sources[j] === 'object') {
                     var val = sources[j][attr];
+
                     if (val !== undefined && val !== null) {
                         options[attr] = val;
                         break;
@@ -1376,6 +1425,7 @@ Chart.prototype.get3dFrame = function () {
             }
         }
         var isVisible = defaultVisible;
+
         if (options.visible === true || options.visible === false) {
             isVisible = options.visible;
         } else if (options.visible === 'auto') {
@@ -1459,6 +1509,7 @@ Chart.prototype.get3dFrame = function () {
         };
 
         var yEdges = [];
+
         if (isValidEdge(ret.left, ret.front)) {
             yEdges.push({
                 y: (ym + yp) / 2,
@@ -1493,6 +1544,7 @@ Chart.prototype.get3dFrame = function () {
         }
 
         var xBottomEdges = [];
+
         if (isValidEdge(ret.bottom, ret.front)) {
             xBottomEdges.push({
                 x: (xm + xp) / 2,
@@ -1511,6 +1563,7 @@ Chart.prototype.get3dFrame = function () {
         }
 
         var xTopEdges = [];
+
         if (isValidEdge(ret.top, ret.front)) {
             xTopEdges.push({
                 x: (xm + xp) / 2,
@@ -1529,6 +1582,7 @@ Chart.prototype.get3dFrame = function () {
         }
 
         var zBottomEdges = [];
+
         if (isValidEdge(ret.bottom, ret.left)) {
             zBottomEdges.push({
                 z: (zm + zp) / 2,
@@ -1547,6 +1601,7 @@ Chart.prototype.get3dFrame = function () {
         }
 
         var zTopEdges = [];
+
         if (isValidEdge(ret.top, ret.left)) {
             zTopEdges.push({
                 z: (zm + zp) / 2,
@@ -1567,11 +1622,13 @@ Chart.prototype.get3dFrame = function () {
         var pickEdge = function (edges, axis, mult) {
             if (edges.length === 0) {
                 return null;
-            } else if (edges.length === 1) {
+            }
+            if (edges.length === 1) {
                 return edges[0];
             }
             var best = 0,
                 projections = perspective(edges, chart, false);
+
             for (var i = 1; i < projections.length; i++) {
                 if (
                     mult * projections[i][axis] >
@@ -1590,6 +1647,7 @@ Chart.prototype.get3dFrame = function () {
             }
             return edges[best];
         };
+
         ret.axes = {
             y: {
                 'left': pickEdge(yEdges, 'x', -1),
@@ -1636,15 +1694,15 @@ Chart.prototype.get3dFrame = function () {
     return ret;
 };
 
-/**
- * Animation setter for matrix property.
- */
+// Animation setter for matrix property.
 H.Fx.prototype.matrixSetter = function () {
     var interpolated;
+
     if (this.pos < 1 &&
             (H.isArray(this.start) || H.isArray(this.end))) {
-        var start = this.start || [ 1, 0, 0, 1, 0, 0];
-        var end   = this.end   || [ 1, 0, 0, 1, 0, 0];
+        var start = this.start || [1, 0, 0, 1, 0, 0];
+        var end = this.end || [1, 0, 0, 1, 0, 0];
+
         interpolated = [];
         for (var i = 0; i < 6; i++) {
             interpolated.push(this.pos * end[i] + (1 - this.pos) * start[i]);
@@ -1662,33 +1720,34 @@ H.Fx.prototype.matrixSetter = function () {
 };
 
 /**
- * Note: As of v5.0.12, `frame.left` or `frame.right` should be used
- * instead.
+ * Note: As of v5.0.12, `frame.left` or `frame.right` should be used instead.
  *
  * The side for the frame around a 3D chart.
  *
- * @since 4.0
- * @product highcharts
+ * @deprecated
+ * @since     4.0
+ * @product   highcharts
  * @apioption chart.options3d.frame.side
  */
 
 /**
  * The color of the panel.
  *
- * @type {Color}
- * @default transparent
- * @since 4.0
- * @product highcharts
+ * @deprecated
+ * @type      {Highcharts.ColorString|Highcharts.GradientColorObject|Highcharts.PatternObject}
+ * @default   transparent
+ * @since     4.0
+ * @product   highcharts
  * @apioption chart.options3d.frame.side.color
  */
 
 /**
  * The thickness of the panel.
  *
- * @type {Number}
- * @default 1
- * @since 4.0
- * @product highcharts
+ * @deprecated
+ * @type      {number}
+ * @default   1
+ * @since     4.0
+ * @product   highcharts
  * @apioption chart.options3d.frame.side.size
  */
-

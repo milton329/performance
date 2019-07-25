@@ -1,82 +1,101 @@
-/**
- * (c) 2010-2017 Torstein Honsi
+/* *
  *
- * License: www.highcharts.com/license
- */
+ *  (c) 2010-2019 Torstein Honsi
+ *
+ *  License: www.highcharts.com/license
+ *
+ * */
+
 'use strict';
+
 import H from '../parts/Globals.js';
 import '../parts/Utilities.js';
 import '../parts/Options.js';
+
 var seriesType = H.seriesType,
     seriesTypes = H.seriesTypes;
 
 /**
- * A mapline series is a special case of the map series where the value colors
- * are applied to the strokes rather than the fills. It can also be used for
- * freeform drawing, like dividers, in the map.
+ * @private
+ * @class
+ * @name Highcharts.seriesTypes.mapline
  *
- * @sample maps/demo/mapline-mappoint/ Mapline and map-point chart
- * @extends {plotOptions.map}
- * @product highmaps
- * @optionparent plotOptions.mapline
+ * @augments Highcharts.Series
  */
-seriesType('mapline', 'map', {
-    
+seriesType('mapline', 'map'
 
     /**
-     * The width of the map line.
+     * A mapline series is a special case of the map series where the value
+     * colors are applied to the strokes rather than the fills. It can also be
+     * used for freeform drawing, like dividers, in the map.
      *
-     * @type {Number}
-     * @default 1
-     * @product highmaps
-     */
-    lineWidth: 1,
-
-    /**
-     * Fill color for the map line shapes
+     * @sample maps/demo/mapline-mappoint/
+     *         Mapline and map-point chart
      *
-     * @type {Color}
-     * @default none
-     * @product highmaps
+     * @extends      plotOptions.map
+     * @product      highmaps
+     * @optionparent plotOptions.mapline
      */
-    fillColor: 'none'
-    
-}, {
-    type: 'mapline',
-    colorProp: 'stroke',
-    
-    pointAttrToOptions: {
-        'stroke': 'color',
-        'stroke-width': 'lineWidth'
-    },
-    /**
-     * Get presentational attributes
-     */
-    pointAttribs: function (point, state) {
-        var attr = seriesTypes.map.prototype.pointAttribs.call(
-            this,
-            point,
-            state
-        );
+    , {
+        /**
+         * The width of the map line.
+         */
+        lineWidth: 1,
 
-        // The difference from a map series is that the stroke takes the point
-        // color
-        attr.fill = this.options.fillColor;
+        /**
+         * Fill color for the map line shapes
+         *
+         * @type {Highcharts.ColorString}
+         */
+        fillColor: 'none'
+    }, {
 
-        return attr;
-    },
-    
-    drawLegendSymbol: seriesTypes.line.prototype.drawLegendSymbol
-});
+        type: 'mapline',
+
+        colorProp: 'stroke',
+
+        pointAttrToOptions: {
+            'stroke': 'color',
+            'stroke-width': 'lineWidth'
+        },
+
+        /**
+         * Get presentational attributes
+         *
+         * @private
+         * @function Highcharts.seriesTypes.mapline#pointAttribs
+         *
+         * @param {Highcharts.Point} point
+         *
+         * @param {string} state
+         *
+         * @return {Highcharts.Dictionary<*>}
+         */
+        pointAttribs: function (point, state) {
+            var attr = seriesTypes.map.prototype.pointAttribs.call(
+                this,
+                point,
+                state
+            );
+
+            // The difference from a map series is that the stroke takes the
+            // point color
+            attr.fill = this.options.fillColor;
+
+            return attr;
+        },
+
+        drawLegendSymbol: seriesTypes.line.prototype.drawLegendSymbol
+
+    });
 
 /**
  * A `mapline` series. If the [type](#series.mapline.type) option is
  * not specified, it is inherited from [chart.type](#chart.type).
  *
- * @type {Object}
- * @extends series,plotOptions.mapline
- * @excluding dataParser,dataURL,marker
- * @product highmaps
+ * @extends   series,plotOptions.mapline
+ * @excluding dataParser, dataURL, marker
+ * @product   highmaps
  * @apioption series.mapline
  */
 
@@ -103,8 +122,8 @@ seriesType('mapline', 'map', {
  *     ]
  *  ```
  *
- * 3.  An array of objects with named values. The objects are point
- * configuration objects as seen below. If the total number of data
+ * 3.  An array of objects with named values. The following snippet shows only a
+ * few settings, see the complete options set below. If the total number of data
  * points exceeds the series' [turboThreshold](#series.map.turboThreshold),
  * this option is not available.
  *
@@ -120,7 +139,7 @@ seriesType('mapline', 'map', {
  *     }]
  *  ```
  *
- * @type {Array<Object>}
- * @product highmaps
+ * @type      {Array<number|Array<string,(number|null)>|null|*>}
+ * @product   highmaps
  * @apioption series.mapline.data
  */

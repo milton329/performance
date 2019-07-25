@@ -1,13 +1,16 @@
-/**
- * (c) 2010-2017 Torstein Honsi
+/* *
+ * (c) 2010-2019 Torstein Honsi
  *
  * Extension to the Series object in 3D charts.
  *
  * License: www.highcharts.com/license
  */
+
 'use strict';
+
 import H from '../parts/Globals.js';
 import '../parts/Utilities.js';
+
 var addEvent = H.addEvent,
     perspective = H.perspective,
     pick = H.pick;
@@ -19,9 +22,7 @@ addEvent(H.Series, 'afterTranslate', function () {
     }
 });
 
-/**
- * Translate the plotX, plotY properties and add plotZ.
- */
+// Translate the plotX, plotY properties and add plotZ.
 H.Series.prototype.translate3dPoints = function () {
     var series = this,
         chart = series.chart,
@@ -48,10 +49,14 @@ H.Series.prototype.translate3dPoints = function () {
             rawPoint.plotZ = 0;
         }
 
+        rawPoint.axisXpos = rawPoint.plotX;
+        rawPoint.axisYpos = rawPoint.plotY;
+        rawPoint.axisZpos = rawPoint.plotZ;
+
         rawPoints.push({
-            x: pick(rawPoint.plotXold, rawPoint.plotX),
-            y: pick(rawPoint.plotYold, rawPoint.plotY),
-            z: pick(rawPoint.plotZold, rawPoint.plotZ)
+            x: rawPoint.plotX,
+            y: rawPoint.plotY,
+            z: rawPoint.plotZ
         });
     }
 
@@ -61,13 +66,8 @@ H.Series.prototype.translate3dPoints = function () {
         rawPoint = series.data[i];
         projectedPoint = projectedPoints[i];
 
-        rawPoint.plotXold = rawPoint.plotX;
-        rawPoint.plotYold = rawPoint.plotY;
-        rawPoint.plotZold = rawPoint.plotZ;
-
         rawPoint.plotX = projectedPoint.x;
         rawPoint.plotY = projectedPoint.y;
         rawPoint.plotZ = projectedPoint.z;
     }
 };
-

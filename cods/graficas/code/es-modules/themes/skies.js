@@ -1,14 +1,17 @@
-/**
- * (c) 2010-2017 Torstein Honsi
+/* *
  *
- * License: www.highcharts.com/license
+ *  (c) 2010-2019 Torstein Honsi
  *
- * Skies theme for Highcharts JS
- * @author Torstein Honsi
- */
+ *  License: www.highcharts.com/license
+ *
+ *  Skies theme for Highcharts JS
+ *
+ * */
 
 'use strict';
+
 import Highcharts from '../parts/Globals.js';
+
 Highcharts.theme = {
     colors: ['#514F78', '#42A07B', '#9B5E4A', '#72727F', '#1F949A',
         '#82914E', '#86777F', '#42A07B'],
@@ -16,7 +19,7 @@ Highcharts.theme = {
         className: 'skies',
         borderWidth: 0,
         plotShadow: true,
-        plotBackgroundImage: 'http://www.highcharts.com/demo/gfx/skies.jpg',
+        plotBackgroundImage: 'https://www.highcharts.com/demo/gfx/skies.jpg',
         plotBackgroundColor: {
             linearGradient: [0, 0, 250, 500],
             stops: [

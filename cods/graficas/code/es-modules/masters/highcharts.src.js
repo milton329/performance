@@ -1,7 +1,8 @@
 /**
  * @license @product.name@ JS v@product.version@ (@product.date@)
+ * @module highcharts/highcharts
  *
- * (c) 2009-2016 Torstein Honsi
+ * (c) 2009-2018 Torstein Honsi
  *
  * License: www.highcharts.com/license
  */
