@@ -10,12 +10,15 @@
                 <?php
                 //verificar que tipo de estado es 
                 if ($estado>4){
+                    $action='accion-competencias_2_consenso.php';
                 ?>
                 <th>Autoevaluación</th>
                 <th>Auditoria</th>
+                <th>Consenso</th>
                 <?php
                 }
                 if ($estado<5){
+                    $action='accion-competencias_2_califica.php';
                 ?>
                 <th>Auditoria</th>
                 <?php
@@ -24,7 +27,7 @@
             </tr>
         </thead>
         <tbody id="tb_body">
-        <form action="../process/autoevaluaciones/accion-competencias_2_califica.php" id="frm-crear-objetivo" name="frm-crear-objetivo" method="post"  class="form_sdv form-horizontal"> 
+        <form action="../process/autoevaluaciones/<?=$action;?>" id="frm-crear-objetivo" name="frm-crear-objetivo" method="post"  class="form_sdv form-horizontal"> 
             <?php 
             $num=1;
             foreach($objetivos as $objetivo){
@@ -53,7 +56,7 @@
                         <td style="width: 20%;">
             <?php 
             //consultar el campo cerrado de la tabla mov
-            if ($objetivo["cerrado"]==5){
+            if ($objetivo["cerrado"]>4){
                 //consultar que puntuacion es
                  $puntuacionesss = "SELECT * FROM puntuaciones  where valor='".$objetivo["valor"]."'";
                  $puntuacioness = $oGlobals->verPorConsultaPor($puntuacionesss, 0);
@@ -86,6 +89,47 @@
             </select>
         <?php } ?>
         </td>
+        <?php
+        // verificar si ya esta en estado consenso
+        if ($estado>4 && $estado<7){
+        ?>
+         <td style="width: 20%;">
+            <select  class="form-control form-group-margin" id="<?=$puntuacion;?>" name="<?=$puntuacion;?>" required/>
+                                       <?php
+                                       //verificar si trae valor
+                                       if($objetivo["valor_consenso"]=='0.0'){$select_id='';$select_value='Seleccione';}
+                                       if($objetivo["valor_consenso"]!='0.0'){
+         //consultar que puntuacion es
+         $puntuacionesss = "SELECT * FROM puntuaciones  where valor='".$objetivo["valor_consenso"]."'";
+         $puntuacioness = $oGlobals->verPorConsultaPor($puntuacionesss, 0);
+
+         $select_id=$objetivo["valor_consenso"];$select_value=$puntuacioness['nombre'];}
+         ?>
+                                        <option value="<?=$select_id;?>"><?=$select_value;?></option>
+                                            <?php 
+                                                $puntuaciones = $oGlobals->verOpcionesPor("puntuaciones", "", 1);
+                                                foreach($puntuaciones as $puntuacion){
+                                            ?>
+                                                    <option value="<?= $puntuacion["valor"]?>"><?= utf8_encode($puntuacion["nombre"]);?></option>
+                                            <?php 
+                                                }
+                                            ?>
+            </select>
+        </td>
+        <?php
+         }
+        if ($estado==7){
+            //consultar que puntuacion es
+                 $puntuacionesss = "SELECT * FROM puntuaciones  where valor='".$objetivo["valor_consenso"]."'";
+                 $puntuacioness = $oGlobals->verPorConsultaPor($puntuacionesss, 0);
+                 $nombre_puntuacion=$puntuacioness['nombre'];
+        ?>
+        <td style="width: 20%;">
+        <?=$nombre_puntuacion;?>
+        </td>
+        <?php
+        }
+        ?>
             </tr>
             <?php $num=$num+1;} ?>
         </tbody>
@@ -96,7 +140,7 @@
     <div class="panel-footer text-right" style="background: none !important;">
     <button class="btn btn-danger" type="button" onClick="location.href='../evaluaciones/evaluaciones.html'">Volver</button>
     <?php
-    if ($objetivo["cerrado"]<5){
+    if ($objetivo["cerrado"]<7){
     ?>
     <button class="btn btn-danger" type="submit">Guardar cambios</button>
     <?php

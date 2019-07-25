@@ -63,7 +63,7 @@
           <div id="rsp-frm-consulta-evaluaciones" class="tabletable">
                     
        <?php 
-       $sql = "select mov.id as id , u.nombre as nombre, r.rol as rol, documento, fecha_documento, mov.fecha_modificacion, e.nombre as estados_mov from mov
+       $sql = "select mov.id as id , u.nombre as nombre, r.rol as rol, documento, fecha_documento, mov.fecha_modificacion, e.nombre as estados_mov, mov.cerrado from mov
                 INNER JOIN config_usuarios as u ON u.id = mov.id_usuario
                 INNER JOIN config_roles as r ON r.id = u.id_rol
                 INNER JOIN estados_mov as e ON e.id = mov.cerrado

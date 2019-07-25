@@ -50,7 +50,7 @@ $documento=$competencias_1["documento"];
     
         <?php 
         	
-			$sql = "SELECT auto_evaluaciones_r.id as id, m.documento as documento , c2.tipo as tipo,  c2.nombre as nombre, auto_evaluaciones_r.valor_usuario_califica as valor, auto_evaluaciones_r.valor_usuario as valor_usuario, m.cerrado as cerrado FROM auto_evaluaciones_r 
+			$sql = "SELECT auto_evaluaciones_r.id as id, m.documento as documento , c2.tipo as tipo,  c2.nombre as nombre, auto_evaluaciones_r.valor_usuario_califica as valor, auto_evaluaciones_r.valor_usuario_consenso as valor_consenso, auto_evaluaciones_r.valor_usuario as valor_usuario, m.cerrado as cerrado FROM auto_evaluaciones_r 
               INNER JOIN competencias_2 as c2 ON c2.id = auto_evaluaciones_r.id_competencias_2
               INNER JOIN auto_evaluaciones as a ON a.id = auto_evaluaciones_r.id_autoevaluaciones
               INNER JOIN mov as m ON m.documento = a.documento              

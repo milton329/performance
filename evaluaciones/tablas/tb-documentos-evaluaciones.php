@@ -21,9 +21,23 @@
                         <td><?= utf8_encode($objetivo["documento"]);?></td>
                         <td><?= utf8_encode($objetivo["fecha_documento"]);?></td>
                         <td><?= utf8_encode($objetivo["fecha_modificacion"]);?></td>
-                        <td><?= utf8_encode(strtoupper($objetivo["estados_mov"]));?></td>
+                        <?php
+                            if($objetivo["cerrado"]==7){ $color="#64FE2E";}
+                            if($objetivo["cerrado"]<2){ $color="#FE2E2E";}
+                            if($objetivo["cerrado"]>1 && $objetivo["cerrado"]<4){ $color="#FFFF00";}
+                            if($objetivo["cerrado"]>3 && $objetivo["cerrado"]<6){ $color="#2E9AFE";}
+                            if($objetivo["cerrado"]==6){ $color="#BDBDBD";}
+                        ?>
+                        <td style="background-color: <?=$color;?>"><b><center><?= utf8_encode(strtoupper($objetivo["estados_mov"]));?></center></b></td>
                         <td align="center">
-                            <a href="../evaluaciones/menu_detalle-competencia1-evaluaciones_<?= $objetivo["documento"];?>.html"  class="btn btn-default btn-xs fa fa-eye" title="Ver"></a>
+                            <?php
+                            if($objetivo["cerrado"]>2)
+                            {
+                            ?>
+                            <a href="../evaluaciones/menu_detalle-competencia1-evaluaciones_<?= $objetivo["documento"];?>.html"  class="btn btn-default btn-xs fa fa-edit" title="Ver"></a>
+                            <?php
+                             }
+                            ?>
                         </td>
                     </tr>
             <?php } ?>

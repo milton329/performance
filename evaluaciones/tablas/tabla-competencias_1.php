@@ -21,7 +21,7 @@
                             ( <?= utf8_encode($objetivo["completado"]);?> de <?= utf8_encode($objetivo["total"]);?> )</center>
                         </td>
                         <td align="center">
-                            <a href="../evaluaciones/menu_detalle-competencia-evaluaciones_<?= $objetivo["id_auto_evaluaciones"];?>.html"  class="btn btn-default btn-xs fa fa-eye" title="Ver"></a>
+                            <a href="../evaluaciones/menu_detalle-competencia-evaluaciones_<?= $objetivo["id_auto_evaluaciones"];?>.html"  class="btn btn-default btn-xs fa fa-edit" title="Ver"></a>
                         </td>
                     </tr>
             <?php } ?>
