@@ -6,6 +6,7 @@
             <tr>
                 <th>Tipo</th>
                 <th><?= $tipo_detalle;?></th>
+                <th>Valor</th>
                 <th>Rol</th>
 				<th>Creado Por</th>
                 <th>Fecha Modificado</th>
@@ -17,6 +18,7 @@
                     <tr id="tr_user_<?= $objetivo["id"];?>">
                         <td><?= utf8_encode($objetivo["tipo"]);?></td>
                         <td><?= utf8_encode($objetivo["nombre"]);?></td>
+                        <td><?= utf8_encode($objetivo["valor"]);?> %</td>
                         <td><?= utf8_encode($objetivo["rol"]);?></td>
                         <td><?= utf8_encode($objetivo["creado_por"]);?></td>
                         <td><?= utf8_encode($objetivo["fecha_modificacion"]);?></td>

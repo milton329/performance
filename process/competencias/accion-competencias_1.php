@@ -14,10 +14,29 @@ session_start();
         $id_empresa 	= $_SESSION["id_empresa"];
 		$tipo 			= $_POST['tipo'];
 		$id_rol 		= $_POST['id_rol'];
+		$valor          = $_POST['valor'];
 
         //consultar nombre del rol 
         $nombre_rol   = $oGlobals->verOpcionesPor("config_roles", " AND id = '$id_rol'", 0);
         $nombre_roles = $nombre_rol["rol"];
+
+
+        if($id == "") {
+		//vericar valor del conocmientos que no supere los 100
+        $sql2 = "SELECT sum(valor)as valor_maximo FROM competencias_1 where id_rol=$id_rol";
+		$competencias_2 	= $oGlobals->verPorConsultaPor($sql2, 0);
+		$valor_bd		    =$competencias_2["valor_maximo"];
+		$valor_posible      =100-$valor_bd;
+        }
+        else {
+        //vericar valor del conocmientos que no supere los 100
+        $sql2 = "SELECT sum(valor)as valor_maximo FROM competencias_1 where id_rol=$id_rol and id<>'$id'";
+		$competencias_2 	= $oGlobals->verPorConsultaPor($sql2, 0);
+		$valor_bd		    =$competencias_2["valor_maximo"];
+		$valor_posible      =100-$valor_bd;
+        }   
+
+        if ($valor<=$valor_posible){
  
 		
 		$insert = 0;
@@ -40,8 +59,9 @@ session_start();
 			$_POST["fecha_modificacion"]    = date("Y-m-d h:i:s"); 
 
 			$update = $oGlobals->update_data_array($_POST, "competencias_1", "id", $id);
-			$update2 = $oGlobals->update_data_array($_POST, "competencias_2", "id_competencias_1", $id);
 
+            $sql1 = "update competencias_2 set rol='".$nombre_roles."', id_rol='".$id_rol."' where id_competencias_1='".$id."'";
+		    $update2 = $oGlobals->verPorConsultaPor($sql1, 0);
 		}
 			
 			if($insert != 0){
@@ -52,6 +72,7 @@ session_start();
 					html = '<tr id="tr_user_<?= $objetivo["id"];?>">\
 			                  <td class="p-a-1"><?= $objetivo["tipo"];?></td>\
 			                  <td class="p-a-1"><?= utf8_encode($objetivo["nombre"]);?></td>\
+			                  <td class="p-a-1"><?= $objetivo["valor"];?> %</td>\
 			                  <td class="p-a-1"><?= $objetivo["rol"];?></td>\
 			                  <td class="p-a-1"><?= $objetivo["creado_por"];?></td>\
 			                  <td class="p-a-1"><?= $objetivo["fecha_modificacion"];?></td>\
@@ -76,6 +97,7 @@ session_start();
 					
 					html = 	 '<td class="p-a-1"><?= $objetivo["tipo"];?></td>\
 			                  <td class="p-a-1"><?= utf8_encode($objetivo["nombre"]);?></td>\
+			                  <td class="p-a-1"><?= $objetivo["valor"];?> %</td>\
 			                  <td class="p-a-1"><?= $objetivo["rol"];?></td>\
 			                  <td class="p-a-1"><?= $objetivo["creado_por"];?></td>\
 			                  <td class="p-a-1"><?= $objetivo["fecha_modificacion"];?></td>\
@@ -89,7 +111,13 @@ session_start();
 				</script>
 <?php				
 			}
-			else echo "<div class='error'>Ha ocurrido un error agregando el registro</div>";				
+			else echo "<div class='error'>Ha ocurrido un error agregando el registro</div>";
+           } //fin de la condicion del valor posible
+
+           else
+           {
+            echo "<div class='error'>Valor maximo posible es : ".$valor_posible." %</div>";
+           }				
 	}
 	else echo "<div class='error'>Debes ingresar compos obligatorios</div>";	
 

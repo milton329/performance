@@ -42,14 +42,28 @@ session_start();
 
 		//Comparar si ya podemos cambiar el estado del documento
 		if ( $total==$total_r ){
-			//Cambiar el estado del mov a Completado Personal
+			//Cambiar el estado del mov a Finalizado
 			$_POST1["cerrado"]    		     = '7';
 			$_POST1["fecha_modificacion"]    = date("Y-m-d h:i:s");
 		    $update1 = $oGlobals->update_data_array($_POST1, "mov", "documento", $documento);
-		    //pendiente para enviar correo de que ya esta listo para ser revisado por el jefe
+		    
+
+
+		    //sacar calificaciones
+
+		    //calcular total de competencias 2
+
+		    //calcular total de competencias 1
+
+		    //modificar el valor de la tabla mov
+
+
+
+            //pendiente para enviar correo de que ya esta listo para ser revisado por el jefe
+
 		}
 		else {
-           //Cambiar el estado del mov a Proceso Personal
+           //Cambiar el estado del mov a Proceso Consenso
 			$_POST1["cerrado"]    		     = '6';
 			$_POST1["fecha_modificacion"]    = date("Y-m-d h:i:s");
 		    $update1 = $oGlobals->update_data_array($_POST1, "mov", "documento", $documento);

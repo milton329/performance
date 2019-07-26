@@ -9,6 +9,7 @@
                 <th>Documento</th>
                 <th>Fecha Doc</th>
                 <th>Estado</th>
+                <th>Valor</th>
                 <th>Opciones</th>
             </tr>
         </thead>
@@ -20,6 +21,7 @@
                         <td><?= utf8_encode($objetivo["documento"]);?></td>
                         <td><?= utf8_encode($objetivo["fecha_documento"]);?></td>
                         <td><?= utf8_encode(strtoupper($objetivo["estados_mov"]));?></td>
+                        <td><?= utf8_encode(strtoupper($objetivo["valor"]));?></td>
                         <td align="center">
                             <a href="#load_modulo" onClick="Funciones.cargar_modal_estructura('<?= $objetivo["id"];?>', 'evaluaciones', 'load_modulo', 2);" title="Editar" data-toggle="modal" class="btn btn-default btn-xs fa fa-edit"></a>
                             <!-- <a href="" onClick="Funciones.eliminar_registro('<?= $objetivo["id"];?>', 'competencias_2', 'rsp_elim');" title="Eliminar" data-toggle="modal" class="btn btn-default btn-xs fa fa-trash"></a> -->

@@ -44,6 +44,7 @@ session_start();
                 $documento = $oGlobals->generarConsecutivoDe(" AND id_tipo_origen = $id_tipo_origen ".$con_emp , "-", 1);
 
 	            $_POST["documento"] 				= $documento;
+	            $_POST["valor"] 				    = '0';
 	            $_POST["id_tipo_documento"]			= $id_tipo_origen;
 				$_POST["tipo_documento"]			= $tipo_competencia;
 				$_POST["cerrado"]   				= 1;
