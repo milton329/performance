@@ -18,7 +18,7 @@
                     <tr id="tr_user_<?= $objetivo["id"];?>">
                         <td><?= utf8_encode($objetivo["tipo"]);?></td>
                         <td><?= utf8_encode($objetivo["nombre"]);?></td>
-                        <td><?= utf8_encode($objetivo["valor"]);?> %</td>
+                        <td><input class="form-control form-group-margin" type="text" id="valor" name="valor" value="<?= utf8_encode($objetivo["valor"]);?>"/></td>
                         <td><?= utf8_encode($objetivo["rol"]);?></td>
                         <td><?= utf8_encode($objetivo["creado_por"]);?></td>
                         <td><?= utf8_encode($objetivo["fecha_modificacion"]);?></td>
@@ -31,4 +31,8 @@
             <?php } ?>
         </tbody>
     </table>
+</div>
+<div id="rsp-frm-crear-objetivo"></div>
+                        <div class="panel-footer text-right" style="background: none !important;">
+                            <button class="btn btn-danger" type="submit">Guardar valores ponderados</button>
 </div>

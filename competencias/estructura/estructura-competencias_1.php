@@ -33,13 +33,9 @@
                                         </select>
                                     </div>
                                     
-                                    <div class="col-md-9">
+                                    <div class="col-md-12">
                                         <label class="control-label">Nombre</label>
                                         <input class="form-control form-group-margin" type="text" id="nombre" name="nombre"/>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label class="control-label">Valor</label>
-                                        <input type='number' class="form-control form-group-margin" type="text" id="valor" name="valor"/>
                                     </div>
                         </div>                        
                         <br />

@@ -14,29 +14,29 @@ session_start();
         $id_empresa 	= $_SESSION["id_empresa"];
 		$tipo 			= $_POST['tipo'];
 		$id_rol 		= $_POST['id_rol'];
-		$valor          = $_POST['valor'];
+		// $valor          = $_POST['valor'];
 
         //consultar nombre del rol 
         $nombre_rol   = $oGlobals->verOpcionesPor("config_roles", " AND id = '$id_rol'", 0);
         $nombre_roles = $nombre_rol["rol"];
 
 
-        if($id == "") {
-		//vericar valor del conocmientos que no supere los 100
-        $sql2 = "SELECT sum(valor)as valor_maximo FROM competencias_1 where id_rol=$id_rol";
-		$competencias_2 	= $oGlobals->verPorConsultaPor($sql2, 0);
-		$valor_bd		    =$competencias_2["valor_maximo"];
-		$valor_posible      =100-$valor_bd;
-        }
-        else {
-        //vericar valor del conocmientos que no supere los 100
-        $sql2 = "SELECT sum(valor)as valor_maximo FROM competencias_1 where id_rol=$id_rol and id<>'$id'";
-		$competencias_2 	= $oGlobals->verPorConsultaPor($sql2, 0);
-		$valor_bd		    =$competencias_2["valor_maximo"];
-		$valor_posible      =100-$valor_bd;
-        }   
+  //       if($id == "") {
+		// //vericar valor del conocmientos que no supere los 100
+  //       $sql2 = "SELECT sum(valor)as valor_maximo FROM competencias_1 where id_rol=$id_rol";
+		// $competencias_2 	= $oGlobals->verPorConsultaPor($sql2, 0);
+		// $valor_bd		    =$competencias_2["valor_maximo"];
+		// $valor_posible      =100-$valor_bd;
+  //       }
+  //       else {
+  //       //vericar valor del conocmientos que no supere los 100
+  //       $sql2 = "SELECT sum(valor)as valor_maximo FROM competencias_1 where id_rol=$id_rol and id<>'$id'";
+		// $competencias_2 	= $oGlobals->verPorConsultaPor($sql2, 0);
+		// $valor_bd		    =$competencias_2["valor_maximo"];
+		// $valor_posible      =100-$valor_bd;
+  //       }   
 
-        if ($valor<=$valor_posible){
+  //       if ($valor<=$valor_posible){
  
 		
 		$insert = 0;
@@ -49,7 +49,7 @@ session_start();
 			$_POST["id_usuario_creador"]	= $_SESSION["idUsuario"];
 			$_POST["id_empresa"]			= $id_empresa;
 			$_POST["fecha_registro"]        = date("Y-m-d h:i:s"); 
-			$_POST["fecha_modificacion"]        = date("Y-m-d h:i:s"); 
+			$_POST["fecha_modificacion"]    = date("Y-m-d h:i:s"); 
 
 			$insert = $oGlobals->insert_data_array($_POST, "competencias_1"); 
 		}
@@ -112,12 +112,12 @@ session_start();
 <?php				
 			}
 			else echo "<div class='error'>Ha ocurrido un error agregando el registro</div>";
-           } //fin de la condicion del valor posible
+           // } //fin de la condicion del valor posible
 
-           else
-           {
-            echo "<div class='error'>Valor maximo posible es : ".$valor_posible." %</div>";
-           }				
+           // else
+           // {
+           //  echo "<div class='error'>Valor maximo posible es : ".$valor_posible." %</div>";
+           // }				
 	}
 	else echo "<div class='error'>Debes ingresar compos obligatorios</div>";	
 
