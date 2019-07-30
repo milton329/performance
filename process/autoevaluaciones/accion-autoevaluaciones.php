@@ -97,9 +97,9 @@ session_start();
 	                    $sql4 = "SELECT * FROM competencias_2 where id_competencias_1='".$id_competencia1."' and id_rol='".$usuario_rol."'";			
 				        $competencias2 = $oGlobals->verPorConsultaPor($sql4, 1); 
 				        // no obligar a entrar el ciclo si no es necesario
+                       count($competencias2);
 
-                        echo count($competencias2);
-
+ 
 				        if (count($competencias2)!=0){
 				        	foreach($competencias2 as $competencia2){
 							            echo $_POST["id_competencias_2"]			= $competencia2["id"];

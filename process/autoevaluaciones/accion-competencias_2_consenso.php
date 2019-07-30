@@ -45,20 +45,20 @@ session_start();
 			//Cambiar el estado del mov a Finalizado
 			$_POST1["cerrado"]    		     = '7';
 			$_POST1["fecha_modificacion"]    = date("Y-m-d h:i:s");
-		    $update1 = $oGlobals->update_data_array($_POST1, "mov", "documento", $documento);
-		    
-
-
+		    $update1 = $oGlobals->update_data_array($_POST1, "mov", "documento", $documento);    
 		    //sacar calificaciones
-
-		    //calcular total de competencias 2
-
-		    //calcular total de competencias 1
-
+            $sql6 		= "SELECT sum((((ar.valor_usuario_consenso * c2.valor)/100)*c1.valor)/100)
+							FROM auto_evaluaciones_r as ar
+							INNER JOIN competencias_2 as c2 ON c2.id = ar.id_competencias_2
+							INNER JOIN auto_evaluaciones as a ON a.id = ar.id_autoevaluaciones
+							INNER JOIN competencias_1 as c1 ON c1.id = a.id_competencias_1
+							INNER JOIN mov as m ON m.documento = a.documento             
+                            where m.documento='".$documento."'";			
+			$sql7 		= $oGlobals->verPorConsultaPor($sql6, 0);
+			$total_califica	= $sql7[0];
+			$_POST1["valor"]    		     = $total_califica;
 		    //modificar el valor de la tabla mov
-
-
-
+            $update1 = $oGlobals->update_data_array($_POST1, "mov", "documento", $documento);
             //pendiente para enviar correo de que ya esta listo para ser revisado por el jefe
 
 		}
