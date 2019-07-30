@@ -91,15 +91,18 @@ session_start();
 	                    $id_autoe = "SELECT id FROM auto_evaluaciones where documento='".$documento."'
 	                    and id_competencias_1='".$id_competencia1."'";			
 						$id_autoeva 		= $oGlobals->verPorConsultaPor($id_autoe, 0);
-					    $id_autoevalucion	=$id_autoeva[0];
+					    echo $id_autoevalucion	= $id_autoeva[0];
 
 	                    //consultar competencias secundarias
 	                    $sql4 = "SELECT * FROM competencias_2 where id_competencias_1='".$id_competencia1."' and id_rol='".$usuario_rol."'";			
 				        $competencias2 = $oGlobals->verPorConsultaPor($sql4, 1); 
 				        // no obligar a entrar el ciclo si no es necesario
-				        if (count($competencias2)!=1){
+
+                        echo count($competencias2);
+
+				        if (count($competencias2)!=0){
 				        	foreach($competencias2 as $competencia2){
-							            $_POST["id_competencias_2"]			= $competencia2["id"];
+							            echo $_POST["id_competencias_2"]			= $competencia2["id"];
 							            $_POST["id_autoevaluaciones"]       = $id_autoevalucion;
 										$_POST["valor_usuario"]   			= '0';
 										$_POST["valor_usuario_califica"]   	= '0';
