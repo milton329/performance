@@ -1,5 +1,6 @@
 <div id="rsp_elim"></div>
-<a href="#load_modulo" onClick="Funciones.cargar_modal_estructura('0_<?= $tipo;?>_0', 'competencias_1', 'load_modulo', 0);" class="btn btn-danger btn-outline" data-toggle="modal" style="float: right;">
+<form action="../process/competencias/accion-competencias_1_valor.php" id="frm-crear-objetivo" name="frm-crear-objetivo" method="post"  class="form_sdv form-horizontal"> 
+<a href="#load_modulo" onClick="Funciones.cargar_modal_estructura('0_<?= $tipo;?>_0', 'competencias_1', 'load_modulo', 2);" class="btn btn-danger btn-outline" data-toggle="modal" style="float: right;">
           <span class="btn-label-icon left fa fa-plus"></span>Nuevo <?= $tipo_detalle;?>
         </a><br/><br/> 
 <div class="table-responsive">
@@ -16,7 +17,6 @@
             </tr>
         </thead>
         <tbody id="tb_body">
-         <form action="../process/competencias/accion-competencias_1_valor.php" id="frm-crear-objetivo" name="frm-crear-objetivo" method="post"  class="form_sdv form-horizontal"> 
             <?php 
             $num=1;
             foreach($objetivos as $objetivo){
@@ -44,9 +44,9 @@
         </tbody>
     </table>
 </div>
-<div id="rsp-frm-crear-objetivo"></div>
                         <div class="panel-footer text-right" style="background: none !important;">
                             <button class="btn btn-danger" type="submit">Guardar valores ponderados</button>
 </div>
+<div id="rsp-frm-crear-objetivo"></div>
 
 <div id="load_modulo" class="modal fade" role="dialog"></div></div>

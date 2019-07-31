@@ -134,6 +134,7 @@ session_start();
 			$sql = "SELECT * FROM competencias_1 where tipo='CON'";      
             $objetivos = $oGlobals->verPorConsultaPor($sql, 1);
 			$tipo_detalle='Conocimientos Principales';
+			$tipo='CON';
 
 			include '../../competencias/tablas/tabla-competencias_1.php';
 		}		

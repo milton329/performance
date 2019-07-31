@@ -41,7 +41,7 @@
         
         
         </div>
-
+        <div id="load_modulo" class="modal fade" role="dialog"></div>
       </div>
     </div>
   </div>
