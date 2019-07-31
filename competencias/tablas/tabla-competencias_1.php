@@ -46,6 +46,7 @@
 </div>
                         <div class="panel-footer text-right" style="background: none !important;">
                             <button class="btn btn-danger" type="submit">Guardar valores ponderados</button>
+                        </form>
 </div>
 <div id="rsp-frm-crear-objetivo"></div>
 <div id="rsp-frm-crear-objetivos"></div>

@@ -20,8 +20,7 @@
     
     <br style="clear: both;"/>
     
-    <ul class="nav nav-lg nav-tabs nav-tabs-simple" id="profile-tabs">
-        
+    <ul class="nav nav-lg nav-tabs nav-tabs-simple" id="profile-tabs">        
         <li class="active"><a href="">Roles </a></li>
         <li><a href="">Conocimientos Principales</a></li>
         <li><a href="#rsp-div-opc-asdf" onClick="Funciones.cargar_tab('<?= $id;?>', 'referencia_precios', 'rsp-div-opc-asdf');" data-toggle="tab" role="tab">Conocimientos Secundarios</a></li>
@@ -33,7 +32,13 @@
            
         <div class="table-danger"> 
         <?php           
-        $sql = "SELECT rol as rol FROM config_roles";      
+        $sql = "SELECT config_roles.rol as rol, 
+                    (select count(*) from config_usuarios where id_rol=config_roles.id) as 
+                    usuarios,
+                    (select count(*) from competencias_1 where id_rol=config_roles.id and tipo='CON') as 
+                    competencias_1
+                    FROM config_roles 
+                ";      
             $objetivos = $oGlobals->verPorConsultaPor($sql, 1);
             if($objetivos != 2) include '../competencias/tablas/tabla-roles.php';
             else        echo "<br>No hay datos para mostrar";        

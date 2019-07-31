@@ -39,7 +39,7 @@ session_start();
 			//editar todos los registros en el campo valor
 			$sql1 = "update competencias_1 set valor='0' where rol='".$nombre_roles."' and  id_rol='".$id_rol."' and  tipo='".$tipo."'";
 		    $update2 = $oGlobals->verPorConsultaPor($sql1, 0);
-		    // echo "<META HTTP-EQUIV='REFRESH' CONTENT='0;URL=../competencias/".$tipo_detalle.".html'>";  
+		    echo "<META HTTP-EQUIV='REFRESH' CONTENT='0;URL=../competencias/".$tipo_detalle.".html'>";  
 
 		}
 		else {
