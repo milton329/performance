@@ -7,14 +7,15 @@ session_start();
 		require_once '../../class/classGlobal.php';
 
 		$oGlobals = new Globals();	
-
-
 		
 		$id 			= $_POST['id'];
         $id_empresa 	= $_SESSION["id_empresa"];
 		$tipo 			= $_POST['tipo'];
 		$id_rol 		= $_POST['id_rol'];
-		// $valor          = $_POST['valor'];
+		
+		if  ($tipo=='CON') { $tipo_detalle='conocimientos'; }
+        if  ($tipo=='HAB') { $tipo_detalle='habilidades'; }
+        if  ($tipo=='ACT') { $tipo_detalle='actitudes'; }
 
         //consultar nombre del rol 
         $nombre_rol   = $oGlobals->verOpcionesPor("config_roles", " AND id = '$id_rol'", 0);
@@ -52,6 +53,12 @@ session_start();
 			$_POST["fecha_modificacion"]    = date("Y-m-d h:i:s"); 
 
 			$insert = $oGlobals->insert_data_array($_POST, "competencias_1"); 
+
+			//editar todos los registros en el campo valor
+			$sql1 = "update competencias_1 set valor='0' where rol='".$nombre_roles."' and  id_rol='".$id_rol."' and  tipo='".$tipo."'";
+		    $update2 = $oGlobals->verPorConsultaPor($sql1, 0);
+		    echo "<META HTTP-EQUIV='REFRESH' CONTENT='0;URL=../competencias/".$tipo_detalle.".html'>";  
+
 		}
 		else {
 

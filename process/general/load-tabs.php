@@ -128,6 +128,14 @@ session_start();
 			$barras   = $oGlobals->verPorConsultaPor($sql, 1);
 
 			include '../../inventarios/estructura/estructura-tab-referencia-cod-barras.php';
+		}
+		if($tab == 'conocimientos_principales') {
+			
+			$sql = "SELECT * FROM competencias_1 where tipo='CON'";      
+            $objetivos = $oGlobals->verPorConsultaPor($sql, 1);
+			$tipo_detalle='Conocimientos Principales';
+
+			include '../../competencias/tablas/tabla-competencias_1.php';
 		}		
 		
 

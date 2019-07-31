@@ -1,10 +1,12 @@
 <div id="rsp_elim"></div>
-
+<a href="#load_modulo" onClick="Funciones.cargar_modal_estructura('0_<?= $tipo;?>_0', 'competencias_1', 'load_modulo', 0);" class="btn btn-danger btn-outline" data-toggle="modal" style="float: right;">
+          <span class="btn-label-icon left fa fa-plus"></span>Nuevo <?= $tipo_detalle;?>
+        </a><br/><br/> 
 <div class="table-responsive">
-    <table class="table  table-bordered table-hover dataTables-example" >
+    <table class="table  table-bordered table-hover" >
         <thead>
             <tr>
-                <th>Tipo</th>
+                <th>Tipoo</th>
                 <th><?= $tipo_detalle;?></th>
                 <th>Valor</th>
                 <th>Rol</th>
@@ -14,11 +16,21 @@
             </tr>
         </thead>
         <tbody id="tb_body">
-            <?php foreach($objetivos as $objetivo){?>
+         <form action="../process/competencias/accion-competencias_1_valor.php" id="frm-crear-objetivo" name="frm-crear-objetivo" method="post"  class="form_sdv form-horizontal"> 
+            <?php 
+            $num=1;
+            foreach($objetivos as $objetivo){
+            //crear los posibles id
+            $idd="id".$num;
+            $puntuacion="puntuacion".$num;
+            ?>
+            <input type="hidden" name="id_rol" id="id_rol" value="<?=$objetivo["id_rol"];?>">
+            <input type="hidden" name="tipo" id="tipo" value="<?=$objetivo["tipo"];?>">
+            <input type="hidden" name="<?=$idd;?>" id="<?=$idd;?>" value="<?=$objetivo["id"];?>">
                     <tr id="tr_user_<?= $objetivo["id"];?>">
                         <td><?= utf8_encode($objetivo["tipo"]);?></td>
                         <td><?= utf8_encode($objetivo["nombre"]);?></td>
-                        <td><input class="form-control form-group-margin" type="text" id="valor" name="valor" value="<?= utf8_encode($objetivo["valor"]);?>"/></td>
+                        <td><input class="form-control form-group-margin" type="text" id="<?=$puntuacion;?>" name="<?=$puntuacion;?>" value="<?= utf8_encode($objetivo["valor"]);?>"/></td>
                         <td><?= utf8_encode($objetivo["rol"]);?></td>
                         <td><?= utf8_encode($objetivo["creado_por"]);?></td>
                         <td><?= utf8_encode($objetivo["fecha_modificacion"]);?></td>
@@ -28,7 +40,7 @@
                             <a href="" onClick="Funciones.eliminar_registro('<?= $objetivo["id"];?>', 'competencias_1', 'rsp_elim');" title="Eliminar" data-toggle="modal" class="btn btn-default btn-xs fa fa-trash"></a>
                         </td>
                     </tr>
-            <?php } ?>
+            <?php $num=$num+1;} ?>
         </tbody>
     </table>
 </div>
@@ -36,3 +48,5 @@
                         <div class="panel-footer text-right" style="background: none !important;">
                             <button class="btn btn-danger" type="submit">Guardar valores ponderados</button>
 </div>
+
+<div id="load_modulo" class="modal fade" role="dialog"></div></div>
