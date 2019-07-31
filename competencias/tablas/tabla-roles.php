@@ -15,7 +15,7 @@
             ?>
                     <tr>
                         <td><?= utf8_encode($num);?></td>
-                        <td><a href="#rsp-div-opc-asdf" onClick="Funciones.cargar_tab('5', 'conocimientos_principales', 'rsp-div-opc-asdf');" data-toggle="tab" role="tab"><?= utf8_encode($objetivo["rol"]);?></a></td>
+                        <td><a href="#rsp-div-opc-asdf" onClick="Funciones.cargar_tab('<?=$objetivo["rol"];?>_<?=$tipo;?>', 'compentencias_principales', 'rsp-div-opc-asdf');" data-toggle="tab" role="tab"><?= utf8_encode($objetivo["rol"]);?></a></td>
                     </tr>
             <?php $num=$num+1;} ?>
         </tbody>

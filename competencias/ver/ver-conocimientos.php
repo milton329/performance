@@ -22,7 +22,7 @@
     
     <ul class="nav nav-lg nav-tabs nav-tabs-simple" id="profile-tabs">
         
-        <li class="active"><a href="#rsp-div-opc-asdf" onClick="Funciones.cargar_tab('<?= $id;?>', 'referencia', 'rsp-div-opc-asdf');" data-toggle="tab" role="tab">Roles </a></li>
+        <li class="active"><a href="">Roles </a></li>
         <li><a href="">Conocimientos Principales</a></li>
         <li><a href="#rsp-div-opc-asdf" onClick="Funciones.cargar_tab('<?= $id;?>', 'referencia_precios', 'rsp-div-opc-asdf');" data-toggle="tab" role="tab">Conocimientos Secundarios</a></li>
     </ul>

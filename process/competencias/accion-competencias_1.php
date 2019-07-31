@@ -21,24 +21,6 @@ session_start();
         $nombre_rol   = $oGlobals->verOpcionesPor("config_roles", " AND id = '$id_rol'", 0);
         $nombre_roles = $nombre_rol["rol"];
 
-
-  //       if($id == "") {
-		// //vericar valor del conocmientos que no supere los 100
-  //       $sql2 = "SELECT sum(valor)as valor_maximo FROM competencias_1 where id_rol=$id_rol";
-		// $competencias_2 	= $oGlobals->verPorConsultaPor($sql2, 0);
-		// $valor_bd		    =$competencias_2["valor_maximo"];
-		// $valor_posible      =100-$valor_bd;
-  //       }
-  //       else {
-  //       //vericar valor del conocmientos que no supere los 100
-  //       $sql2 = "SELECT sum(valor)as valor_maximo FROM competencias_1 where id_rol=$id_rol and id<>'$id'";
-		// $competencias_2 	= $oGlobals->verPorConsultaPor($sql2, 0);
-		// $valor_bd		    =$competencias_2["valor_maximo"];
-		// $valor_posible      =100-$valor_bd;
-  //       }   
-
-  //       if ($valor<=$valor_posible){
- 
 		
 		$insert = 0;
 		$update = 2;
@@ -57,7 +39,7 @@ session_start();
 			//editar todos los registros en el campo valor
 			$sql1 = "update competencias_1 set valor='0' where rol='".$nombre_roles."' and  id_rol='".$id_rol."' and  tipo='".$tipo."'";
 		    $update2 = $oGlobals->verPorConsultaPor($sql1, 0);
-		    echo "<META HTTP-EQUIV='REFRESH' CONTENT='0;URL=../competencias/".$tipo_detalle.".html'>";  
+		    // echo "<META HTTP-EQUIV='REFRESH' CONTENT='0;URL=../competencias/".$tipo_detalle.".html'>";  
 
 		}
 		else {

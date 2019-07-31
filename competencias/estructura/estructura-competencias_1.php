@@ -12,7 +12,7 @@
         		
                <div id="div-modulo-opcion">
                
-               		<form action="../process/competencias/accion-competencias_1.php" id="frm-crear-objetivo" name="frm-crear-objetivo" method="post"  class="form_sdv form-horizontal"> 
+               		<form action="../process/competencias/accion-competencias_1.php" id="frm-crear-objetivos" name="frm-crear-objetivos" method="post"  class="form_sdv form-horizontal"> 
                         
                         <input type="hidden" name="id" id="id">
                         <input type="hidden" name="tipo" id="tipo" value="<?=$tipo;?>">
@@ -40,7 +40,7 @@
                         </div>                        
                         <br />
                         
-						<div id="rsp-frm-crear-objetivo"></div>
+						<div id="rsp-frm-crear-objetivos"></div>
 						<div class="panel-footer text-right" style="background: none !important;">
 							<button class="btn btn-danger" type="button" onClick="location.href='../competencias'">Volver</button>
 							<button class="btn btn-danger" type="submit">Guardar cambios</button>

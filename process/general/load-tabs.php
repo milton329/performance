@@ -129,14 +129,22 @@ session_start();
 
 			include '../../inventarios/estructura/estructura-tab-referencia-cod-barras.php';
 		}
-		if($tab == 'conocimientos_principales') {
-			
-			$sql = "SELECT * FROM competencias_1 where tipo='CON'";      
-            $objetivos = $oGlobals->verPorConsultaPor($sql, 1);
-			$tipo_detalle='Conocimientos Principales';
-			$tipo='CON';
+		if($tab == 'compentencias_principales') {
 
-			include '../../competencias/tablas/tabla-competencias_1.php';
+			    $var = explode("_", $id);				
+				$rol 	 = $var[0];
+				$tipo    = $var[1];
+			
+			$sql = "SELECT * FROM competencias_1 where tipo='".$tipo."' and rol='".$rol."'";      
+            $objetivos = $oGlobals->verPorConsultaPor($sql, 1);
+            if  ($tipo=='CON') { $tipo_detalle='Conocimientos Principales'; }
+            if  ($tipo=='HAB') { $tipo_detalle='Habiliadades Principales'; }
+            if  ($tipo=='ACT') { $tipo_detalle='Actitudes Principales'; }
+
+
+            if($objetivos != 2) include '../../competencias/tablas/tabla-competencias_1.php';
+            else 			  echo "<br>No hay datos para mostrar";
+
 		}		
 		
 
