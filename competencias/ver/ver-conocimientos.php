@@ -21,9 +21,9 @@
     <br style="clear: both;"/>
     
     <ul class="nav nav-lg nav-tabs nav-tabs-simple" id="profile-tabs">        
-        <li class="active"><a href="">Roles </a></li>
-        <li><a href="">Conocimientos Principales</a></li>
-        <li><a href="#rsp-div-opc-asdf" onClick="Funciones.cargar_tab('<?= $id;?>', 'referencia_precios', 'rsp-div-opc-asdf');" data-toggle="tab" role="tab">Conocimientos Secundarios</a></li>
+        <li><a href="" >Roles </a></li>
+        <!-- <li ><a href="" id="tr_user_2">Conocimientos Principales</a></li>
+        <li><a href="#rsp-div-opc-asdf" onClick="Funciones.cargar_tab('<?= $id;?>', 'referencia_precios', 'rsp-div-opc-asdf');" data-toggle="tab" role="tab">Conocimientos Secundarios</a></li> -->
     </ul>
 
     <div class="tab-content p-y-0">
@@ -37,7 +37,7 @@
                     usuarios,
                     (select count(*) from competencias_1 where id_rol=config_roles.id and tipo='CON') as 
                     competencias_1
-                    FROM config_roles 
+                    FROM config_roles where config_roles.rol not in('Administrador','Administrador principal') 
                 ";      
             $objetivos = $oGlobals->verPorConsultaPor($sql, 1);
             if($objetivos != 2) include '../competencias/tablas/tabla-roles.php';
@@ -56,20 +56,6 @@
 </div>
 
 </div>
-
-
-
-
-<!-- <div class="table-danger">
-        <a href="#load_modulo" onClick="Funciones.cargar_modal_estructura('0_<?= $tipo;?>_0', 'competencias_1', 'load_modulo', 0);" class="btn btn-danger btn-outline" data-toggle="modal" style="float: right;">
-          <span class="btn-label-icon left fa fa-plus"></span>Nuevo <?= $tipo_detalle;?>
-        </a><br/><br/>    
-        <?php           
-        $sql = "SELECT * FROM competencias_1 where tipo='".$tipo."'";      
-            $objetivos = $oGlobals->verPorConsultaPor($sql, 1);
-            if($objetivos != 2) include '../competencias/tablas/tabla-roles.php';
-            else        echo "<br>No hay datos para mostrar";        
-        ?><div id="load_modulo" class="modal fade" role="dialog"></div></div> -->
 
 
     

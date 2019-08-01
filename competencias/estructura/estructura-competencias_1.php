@@ -16,23 +16,8 @@
                         
                         <input type="hidden" name="id" id="id">
                         <input type="hidden" name="tipo" id="tipo" value="<?=$tipo;?>">
-                        
-						<div class="row">                           
-                                    <div class="col-md-6">
-                                        <label class="control-label">Rol</label>
-                                        <select class="form-control form-group-margin" id="id_rol" name="id_rol">
-                                        <option value="">Seleccione</option>
-                                            <?php 
-                                                $rol = $oGlobals->verOpcionesPor("config_roles", "", 1);
-                                                foreach($rol as $roles){
-                                            ?>
-                                                    <option value="<?= $roles["id"]?>"><?= utf8_encode($roles["rol"]);?></option>
-                                            <?php 
-                                                }
-                                            ?>
-                                        </select>
-                                    </div>
-                                    
+                        <input type="hidden" name="rol"  id="rol" value="<?=$rol;?>">                        
+						<div class="row">                                                              
                                     <div class="col-md-12">
                                         <label class="control-label">Nombre</label>
                                         <input class="form-control form-group-margin" type="text" id="nombre" name="nombre"/>

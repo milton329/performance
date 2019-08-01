@@ -140,10 +140,18 @@ session_start();
             if  ($tipo=='CON') { $tipo_detalle='Conocimientos Principales'; }
             if  ($tipo=='HAB') { $tipo_detalle='Habiliadades Principales'; }
             if  ($tipo=='ACT') { $tipo_detalle='Actitudes Principales'; }
+            ?>
+				<script>
+					html = '<li class="active"><a href="#">Conocimientos Principales</a></li>';
+			        $("#profile-tabs").append(html);
+				</script>
 
-
+            <a href="#load_modulo" onClick="Funciones.cargar_modal_estructura('0_<?= $tipo;?>_0_<?=$rol;?>', 'competencias_1', 'load_modulo', 2);" class="btn btn-danger btn-outline" data-toggle="modal" style="float: right;">
+            <span class="btn-label-icon left fa fa-plus"></span>Nuevo <?= $tipo_detalle;?>
+            </a>
+            <?php
             if($objetivos != 2) include '../../competencias/tablas/tabla-competencias_1.php';
-            else 			  echo "<br>No hay datos para mostrar";
+            else echo "<br>No hay datos para mostrar";
 
 		}		
 		

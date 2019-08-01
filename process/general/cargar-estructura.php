@@ -423,6 +423,7 @@ session_start();
 			    $var 	= explode("_", $id);				
 				$tipo 	= $var[1];
 				$id 	= $var[2];
+				$rol 	= $var[3];
 
 				if  ($tipo=='CON') { $tipo_detalle='Conocimientos Principales'; }
 				if  ($tipo=='HAB') { $tipo_detalle='Habiliadades Principales'; }
